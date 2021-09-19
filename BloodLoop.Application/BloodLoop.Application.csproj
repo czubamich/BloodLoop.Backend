@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Accounts\Commands\" />
+    <Folder Include="Accounts\Queries\" />
+    <Folder Include="Accounts\Shared\" />
+    <Folder Include="BloodBanks\Commands\" />
+    <Folder Include="BloodBanks\Queries\" />
+    <Folder Include="BloodBanks\Shared\" />
+    <Folder Include="Donations\Commands\" />
+    <Folder Include="Donations\Queries\" />
+    <Folder Include="Donations\Shared\" />
+    <Folder Include="Shared\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="FluentValidation" Version="10.3.3" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.3" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BloodCore\BloodCore.csproj" />
+    <ProjectReference Include="..\BloodLoop.Domain\BloodLoop.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
