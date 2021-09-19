@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Domain.Tests", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Infrastructure.Tests", "BloodLoop.Infrastructure.Tests\BloodLoop.Infrastructure.Tests.csproj", "{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Api", "BloodLoop.Api\BloodLoop.Api.csproj", "{9FA53769-FE05-4830-8E00-386A5F2A3DA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,18 @@ Global
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhone.Build.0 = Release|Any CPU
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhone.Build.0 = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
