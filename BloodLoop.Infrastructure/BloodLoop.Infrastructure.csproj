@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Common\" />
     <Folder Include="Identity\" />
     <Folder Include="Persistance\Configurations\" />
     <Folder Include="Persistance\Migrations\" />

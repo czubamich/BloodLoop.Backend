@@ -1,41 +1,15 @@
-﻿using BloodCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodLoop.Infrastructure
+namespace BloodCore.AspNet
 {
-    public static class InfrastructureRegistration
+    public static class ServiceCollectionExt
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
-        {
-            //TODO
-
-            return services;
-        }
-
-        static IEnumerable<Assembly> GetAssemblies()
-        {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
-            var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
-
-            var referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
-            var toLoad = referencedPaths
-                .Where(r => !loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase))
-                .Select(x => AssemblyName.GetAssemblyName(x))
-                .Where(x => x.Name.Contains("Blood"))
-                .ToList();
-
-            toLoad.ForEach(x => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(x)));
-            return loadedAssemblies.Where(x => x.FullName.Contains("Blood"));
-        }
-
         public static IServiceCollection RegisterInjectables(this IServiceCollection services, IEnumerable<Type> types)
         {
             var definitions = types

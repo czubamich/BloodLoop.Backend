@@ -1,23 +1,21 @@
 using BloodLoop.Application.Services;
-using BloodLoop.Infrastructure;
-using BloodLoop.Infrastructure.Persistance;
 using BloodLoop.WebApi.Extensions;
 using BloodLoop.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using BloodCore.AspNet;
+using BloodLoop.Infrastructure;
 
 namespace BloodLoop.WebApi
 {
@@ -33,12 +31,14 @@ namespace BloodLoop.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSecurity(Configuration);
+            IEnumerable<Assembly> appAssemblies = GetAssemblies();
 
-            services.AddInfrastructure(Configuration);
+            services.AddSecurity(Configuration);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();
+
+            services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -79,6 +79,22 @@ namespace BloodLoop.WebApi
             });
 
             app.UseStaticFiles();
+        }
+
+        public static IEnumerable<Assembly> GetAssemblies()
+        {
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            var loadedPaths = loadedAssemblies.Select(a => a.Location).ToArray();
+
+            var referencedPaths = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll");
+            var toLoad = referencedPaths
+                .Where(r => !loadedPaths.Contains(r, StringComparer.InvariantCultureIgnoreCase))
+                .Select(x => AssemblyName.GetAssemblyName(x))
+                .Where(x => x.Name.Contains("Blood"))
+                .ToList();
+
+            toLoad.ForEach(x => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(x)));
+            return loadedAssemblies.Where(x => x.FullName.Contains("Blood"));
         }
     }
 }
