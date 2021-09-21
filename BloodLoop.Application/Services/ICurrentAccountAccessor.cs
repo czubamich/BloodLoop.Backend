@@ -10,7 +10,5 @@ namespace BloodLoop.Application.Services
     public interface ICurrentAccountAccessor
     {
         AccountId AccountId { get; }
-
-        bool IsInRole(RoleId role);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using BloodCore.Common;
+using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.Accounts
 {
-    public class Account : AggregateRoot<AccountId>
+    public class Account : IdentityUser<AccountId>, IAggregateRoot<AccountId>
     {
-        public string UserName { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public string Email { get; private set; }
-        public string PhoneNumber { get; private set; }
-        public string PasswordHash { get; private set; }
-        public DateTime CreatedDate { get; private set; }
+        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new ConcurrentQueue<IDomainEvent>();
 
-        public IEnumerable<RoleId> RoleIds { get; private set; }
-        public IEnumerable<Role> Roles { get; private set; }
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
+
+        AccountId IEntity<AccountId>.Id => AccountId.Of(Id);
+
+        [PersonalData]
+        public string FirstName { get; private set; }
+        [PersonalData]
+        public string LastName { get; private set; }
+        public DateTime CreatedDate { get; private set; }
 
         public Account(AccountId id, string userName, string email, string passwordHash, DateTime createdAt)
         {
@@ -32,6 +35,12 @@ namespace BloodLoop.Domain.Accounts
         public Account(AccountId id, string userName, string email, string passwordHash)
             => new Account(id, userName, email, passwordHash, DateTime.Now);
 
+        protected void Publish(IDomainEvent domainEvent) => _domainEvents.Enqueue(domainEvent);
+
+        public bool TryDequeue(out IDomainEvent domainEvent) => _domainEvents.TryDequeue(out domainEvent);
+
+        public void ClearDomainEvents() => _domainEvents.Clear();
+
         public Account SetFirstName(string firstName)
         {
             FirstName = firstName;
@@ -42,13 +51,6 @@ namespace BloodLoop.Domain.Accounts
         public Account SetLastName(string lastName)
         {
             LastName = lastName;
-
-            return this;
-        }
-
-        public Account SetPhoneNumber(string phoneNumber)
-        {
-            PhoneNumber = phoneNumber;
 
             return this;
         }

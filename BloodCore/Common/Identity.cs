@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BloodCore.Common
 {
-    public abstract class Identity : ValueObject
+    public abstract class Identity : ValueObject, IEquatable<Identity>
     {
         public Guid Id { get; protected set; }
 
@@ -18,6 +18,12 @@ namespace BloodCore.Common
         }
 
         public override string ToString() => Id.ToString();
+
+        public bool Equals(Identity other)
+        {
+            if (other is null) return false;
+            return Id == other.Id;
+        }
 
         public static implicit operator Guid(Identity id) => id.Id;
     }

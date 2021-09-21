@@ -16,6 +16,11 @@ using System.Linq;
 using System.Reflection;
 using BloodCore.AspNet;
 using BloodLoop.Infrastructure;
+using BloodLoop.Domain.Accounts;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using BloodLoop.Infrastructure.Persistance;
+using BloodCore.Common;
 
 namespace BloodLoop.WebApi
 {
@@ -34,6 +39,23 @@ namespace BloodLoop.WebApi
             IEnumerable<Assembly> appAssemblies = GetAssemblies();
 
             services.AddSecurity(Configuration);
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("BloodLoop"),
+                    opt => opt.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+            });
+
+            services.AddScoped<IUnitOfWork>(x => x.GetService<ApplicationDbContext>());
+
+            //services.AddScoped<IUserClaimsPrincipalFactory<Account>,
+            //    PluralsightUserClaimsPrincipalFactory>();
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+                options.TokenLifespan = TimeSpan.FromHours(3));
+
+            services.AddAuthentication()
+                .AddCookie();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();

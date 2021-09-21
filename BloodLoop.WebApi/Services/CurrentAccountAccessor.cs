@@ -19,7 +19,5 @@ namespace BloodLoop.WebApi.Services
         }
 
         public AccountId AccountId => _httpContextAccessor.HttpContext.User.AccountId();
-
-        public bool IsInRole(RoleId role) => _httpContextAccessor.HttpContext.User.IsInRole(role.Id.ToString());
     }
 }
