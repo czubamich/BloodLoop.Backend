@@ -27,4 +27,15 @@ namespace BloodCore.Common
 
         public static implicit operator Guid(Identity id) => id.Id;
     }
+
+    public abstract class Identity<TIdentity> : Identity where TIdentity : Identity
+    {
+        protected Identity(Guid id) : base(id) { }
+
+        public static TIdentity Of(Guid id) => (TIdentity)Activator.CreateInstance(typeof(TIdentity), new[] { id } );
+
+        public static TIdentity Of(string id) => Of(new Guid(id));
+
+        public static TIdentity New => (TIdentity)Activator.CreateInstance(typeof(TIdentity), new[] { Guid.NewGuid() });
+    }
 }
