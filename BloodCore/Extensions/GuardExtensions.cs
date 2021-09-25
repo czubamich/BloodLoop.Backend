@@ -12,7 +12,7 @@ namespace BloodCore.Extensions
 {
     public static class GuardExtensions
     {
-        public static TIdentity NullOrDefault<TIdentity>(this IGuardClause guardClause, [NotNull] TIdentity input, string parameterName, string? message = null) where TIdentity : Identity
+        public static TIdentity NullOrDefault<TIdentity>(this IGuardClause guardClause, [NotNull] TIdentity input, string parameterName, string message = null) where TIdentity : Identity
         {
             Guard.Against.Null(input, parameterName);
             if (input.Id.IsDefault())
