@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodLoop.Infrastructure.Identity
+namespace BloodLoop.Infrastructure.Identities
 {
     public static class IdentityServiceCollectionExt
     {

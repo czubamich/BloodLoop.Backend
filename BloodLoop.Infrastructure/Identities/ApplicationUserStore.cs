@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BloodLoop.Infrastructure.Identity
+namespace BloodLoop.Infrastructure.Identities
 {
     class ApplicationUserStore : UserStoreBase<Account, IdentityRole<AccountId>, AccountId, IdentityUserClaim<AccountId>, IdentityUserRole<AccountId>, IdentityUserLogin<AccountId>, IdentityUserToken<AccountId>, IdentityRoleClaim<AccountId>>
     {
