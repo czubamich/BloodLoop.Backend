@@ -15,7 +15,8 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
 
             builder
                 .Property(x => x.Id)
-                .HasConversion(x => x.Id, id => AccountId.Of(id));
+                .HasConversion(x => x.Id, id => AccountId.Of(id))
+                .IsRequired();
         }
     }
 
@@ -28,7 +29,8 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
 
             builder
                 .Property(x => x.Id)
-                .HasConversion(x => x.Id, id => AccountId.Of(id));
+                .HasConversion(x => x.Id, id => AccountId.Of(id))
+                .IsRequired();
         }
     }
 }

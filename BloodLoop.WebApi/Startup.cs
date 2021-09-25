@@ -43,7 +43,7 @@ namespace BloodLoop.WebApi
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("BloodLoop"),
-                    opt => opt.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
+                    opt => opt.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name));
             });
 
             services.AddScoped<IUnitOfWork>(x => x.GetService<ApplicationDbContext>());
@@ -70,8 +70,10 @@ namespace BloodLoop.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext)
         {
+            dbContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
