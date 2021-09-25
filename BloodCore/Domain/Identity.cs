@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodCore.Common
+namespace BloodCore.Domain
 {
     public abstract class Identity : ValueObject, IEquatable<Identity>
     {

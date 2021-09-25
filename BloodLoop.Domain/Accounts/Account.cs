@@ -1,4 +1,4 @@
-﻿using BloodCore.Common;
+﻿using BloodCore.Domain;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Concurrent;

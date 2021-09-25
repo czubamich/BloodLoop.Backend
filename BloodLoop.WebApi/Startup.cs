@@ -20,7 +20,8 @@ using BloodLoop.Domain.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BloodLoop.Infrastructure.Persistance;
-using BloodCore.Common;
+using BloodCore.Domain;
+using BloodCore.Persistance;
 
 namespace BloodLoop.WebApi
 {

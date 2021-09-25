@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace BloodCore.Common
+namespace BloodCore.Domain
 {
     public interface IDomainEvent : INotification
     {

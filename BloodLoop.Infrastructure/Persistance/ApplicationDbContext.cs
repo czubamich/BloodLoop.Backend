@@ -1,4 +1,5 @@
-﻿using BloodCore.Common;
+﻿using BloodCore.Domain;
+using BloodCore.Persistance;
 using BloodLoop.Domain.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

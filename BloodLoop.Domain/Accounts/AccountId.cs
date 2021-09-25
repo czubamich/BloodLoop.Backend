@@ -1,4 +1,4 @@
-﻿using BloodCore.Common;
+﻿using BloodCore.Domain;
 using System;
 
 namespace BloodLoop.Domain.Accounts

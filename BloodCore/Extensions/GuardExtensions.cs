@@ -1,5 +1,5 @@
 ﻿using Ardalis.GuardClauses;
-using BloodCore.Common;
+using BloodCore.Domain;
 using LanguageExt;
 using System;
 using System.Collections.Generic;

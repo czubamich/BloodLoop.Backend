@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodCore.Common
+namespace BloodCore.Domain
 {
     [Serializable]
     public abstract class ValueObject : IComparable, IComparable<ValueObject>

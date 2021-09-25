@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodCore.Common
+namespace BloodCore.Domain
 {
     public abstract class Entity<TIdentity> : IEquatable<Entity<TIdentity>>, IEntity<TIdentity> where TIdentity : Identity
     {

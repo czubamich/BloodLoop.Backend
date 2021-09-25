@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodCore.Interfaces
+namespace BloodLoop.Application.Services
 {
-    interface IReadModelContext
+    class IDonationIntervalsService
     {
-
     }
 }

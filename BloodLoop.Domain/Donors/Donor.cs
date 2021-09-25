@@ -1,5 +1,5 @@
 ﻿using Ardalis.GuardClauses;
-using BloodCore.Common;
+using BloodCore.Domain;
 using BloodCore.Extensions;
 using BloodLoop.Domain.Accounts;
 using BloodLoop.Domain.Donations;
