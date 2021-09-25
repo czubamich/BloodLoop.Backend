@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.Donations
 {
-    public class DonationType : Entity<DonationTypeId>
+    public class DonationType : ValueObject
     {
         public string Label { get; private set; }
         public string DefaultName { get; private set; }
@@ -19,32 +19,35 @@ namespace BloodLoop.Domain.Donations
 
         private DonationType() {}
 
-        internal DonationType(DonationTypeId id, string label, string defaultName, int defaultVolume) : base(id)
+        internal DonationType(string label, string defaultName, int defaultVolume)
         {
-            Label = Guard.Against.InvalidFormat(label, nameof(Label), "^[a-z0-9_\\-]+$");
-            DefaultName = Guard.Against.NullOrEmpty(defaultName, nameof(DefaultName));
-            DefaultVolume = Guard.Against.Negative(defaultVolume, nameof(DefaultVolume));
+            Label = label;
+            DefaultName = defaultName;
+            DefaultVolume = defaultVolume;
         }
 
         #endregion
 
-        #region Creations
-
-        internal static DonationType Create(DonationTypeId id, string label, string defaultName, int defaultVolume)
-            => new DonationType(id, label, defaultName, defaultVolume);
-
-        internal static DonationType Create(string label, string defaultName, int defaultVolume)
-            => new DonationType(DonationTypeId.New, label, defaultName, defaultVolume);
-
-        #endregion
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Label;
+        }
 
         #region Defaults
 
-        public static DonationType Whole        => Create(DonationTypeId.Of("d03ebd31-7490-4c6e-ae55-135024b9f500"), nameof(Whole).ToLower(), "Whole Blood", 450);
-        public static DonationType Plasma       => Create(DonationTypeId.Of("9466bb55-e230-471d-afa5-3ea22801bdb8"), nameof(Plasma).ToLower(), "Plasma", 600);
-        public static DonationType Platelets    => Create(DonationTypeId.Of("d03ebd31-7490-4c6e-ae55-135024b9f500"), nameof(Platelets).ToLower(), "Platelets", 500);
-        public static DonationType RedCells     => Create(DonationTypeId.Of("d03ebd31-7490-4c6e-ae55-135024b9f500"), nameof(RedCells).ToLower(), "Red Cells", 500);
-        public static DonationType Disqualified => Create(DonationTypeId.Of("d03ebd31-7490-4c6e-ae55-135024b9f500"), nameof(Disqualified).ToLower(), "Disqualified", 0);
+        public static DonationType Whole        => new DonationType(nameof(Whole).ToLower(), "Whole Blood", 450);
+        public static DonationType Plasma       => new DonationType(nameof(Plasma).ToLower(), "Plasma", 600);
+        public static DonationType Platelets    => new DonationType(nameof(Platelets).ToLower(), "Platelets", 500);
+        public static DonationType RedCells     => new DonationType(nameof(RedCells).ToLower(), "Red Cells", 500);
+        public static DonationType Disqualified => new DonationType(nameof(Disqualified).ToLower(), "Disqualified", 0);
+
+        public static DonationType[] GetDonationTypes()
+        {
+            return new[]
+            {
+                Whole, Plasma, Platelets, RedCells, Disqualified
+            };
+        }
 
         #endregion
     }

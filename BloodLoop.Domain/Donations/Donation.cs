@@ -18,16 +18,15 @@ namespace BloodLoop.Domain.Donations
         public DonorId DonorId { get; private set; }
 
         public DonationType DonationType { get; private set; }
-        public DonationTypeId DonationTypeId { get; private set; }
 
         #region Constructors
         
         private Donation() {}
 
-        private Donation(DonationId id, DonorId donorId, DonationTypeId donationTypeId, DateTime date) : base(id)
+        private Donation(DonationId id, DonorId donorId, DonationType donationType, DateTime date) : base(id)
         {
             DonorId = Guard.Against.Null(donorId, nameof(Id));
-            DonationTypeId = Guard.Against.Null(donationTypeId, nameof(Id));
+            DonationType = Guard.Against.Null(donationType, nameof(Id));
             Date = Guard.Against.OutOfSQLDateRange(date, nameof(Date));
         }
 
@@ -35,11 +34,11 @@ namespace BloodLoop.Domain.Donations
 
         #region Creations
 
-        public static Donation Create(DonationId id, DonorId donorId, DonationTypeId donationTypeId, DateTime date)
-            => new Donation(id, donorId, donationTypeId, date);
+        public static Donation Create(DonationId id, DonorId donorId, DonationType donationType, DateTime date)
+            => new Donation(id, donorId, donationType, date);
 
-        public static Donation Create(DonorId donorId, DonationTypeId donationTypeId, DateTime date)
-            => new Donation(DonationId.New, donorId, donationTypeId, date);
+        public static Donation Create(DonorId donorId, DonationType donationType, DateTime date)
+            => new Donation(DonationId.New, donorId, donationType, date);
 
         #endregion
 
