@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
+using BloodCore.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +12,9 @@ namespace BloodCore.Common
     {
         public TIdentity Id { get; protected set; }
 
-        protected Entity(TIdentity id) => this.Id = id;
+        protected Entity(TIdentity id) => this.Id = Guard.Against.NullOrDefault(id, nameof(Id));
 
         protected Entity() { }
-
-
 
         public bool Equals(Entity<TIdentity> other)
         {

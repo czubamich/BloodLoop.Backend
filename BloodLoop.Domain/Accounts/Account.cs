@@ -23,6 +23,12 @@ namespace BloodLoop.Domain.Accounts
         public string LastName { get; private set; }
         public DateTime CreatedDate { get; private set; }
 
+        #region Constructors
+
+        private Account() 
+        { 
+        }
+
         public Account(AccountId id, string userName, string email, string passwordHash, DateTime createdAt)
         {
             Id = id;
@@ -32,8 +38,16 @@ namespace BloodLoop.Domain.Accounts
             createdAt = DateTime.Now;
         }
 
+        #endregion
+
+        #region Creations
+
         public Account(AccountId id, string userName, string email, string passwordHash)
             => new Account(id, userName, email, passwordHash, DateTime.Now);
+
+        #endregion
+
+        #region Behaviours
 
         protected void Publish(IDomainEvent domainEvent) => _domainEvents.Enqueue(domainEvent);
 
@@ -54,5 +68,7 @@ namespace BloodLoop.Domain.Accounts
 
             return this;
         }
+
+        #endregion
     }
 }

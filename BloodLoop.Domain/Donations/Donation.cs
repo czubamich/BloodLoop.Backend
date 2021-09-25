@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodLoop.Domain.Donation
+namespace BloodLoop.Domain.Donations
 {
     public class Donation : Entity<DonationId>
     {
@@ -20,8 +20,8 @@ namespace BloodLoop.Domain.Donation
         public DonationType DonationType { get; private set; }
         public DonationTypeId DonationTypeId { get; private set; }
 
-
-        #region Creations
+        #region Constructors
+        
         private Donation() {}
 
         private Donation(DonationId id, DonorId donorId, DonationTypeId donationTypeId, DateTime date) : base(id)
@@ -31,10 +31,14 @@ namespace BloodLoop.Domain.Donation
             Date = Guard.Against.OutOfSQLDateRange(date, nameof(Date));
         }
 
-        private Donation Create(DonationId id, DonorId donorId, DonationTypeId donationTypeId, DateTime date)
+        #endregion
+
+        #region Creations
+
+        public static Donation Create(DonationId id, DonorId donorId, DonationTypeId donationTypeId, DateTime date)
             => new Donation(id, donorId, donationTypeId, date);
 
-        private Donation Create(DonorId donorId, DonationTypeId donationTypeId, DateTime date)
+        public static Donation Create(DonorId donorId, DonationTypeId donationTypeId, DateTime date)
             => new Donation(DonationId.New, donorId, donationTypeId, date);
 
         #endregion

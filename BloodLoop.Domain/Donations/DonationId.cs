@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodLoop.Domain.Donation
+namespace BloodLoop.Domain.Donations
 {
     public class DonationId : Identity<DonationId>
     {
