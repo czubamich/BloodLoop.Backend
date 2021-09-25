@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.Donors
 {
-    public class Donor : Entity<DonorId>
+    public class Donor : AggregateRoot<DonorId>
     {
         public AccountId AccountId { get; init; }
         public Account Account { get; }
