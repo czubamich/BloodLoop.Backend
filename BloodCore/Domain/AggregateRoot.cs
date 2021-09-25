@@ -5,7 +5,7 @@ namespace BloodCore.Domain
 {
     public abstract class AggregateRoot<TIdentity> : Entity<TIdentity>, IAggregateRoot<TIdentity> where TIdentity : Identity
     {
-        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new ConcurrentQueue<IDomainEvent>();
+        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new();
 
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
 

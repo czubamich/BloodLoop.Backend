@@ -35,7 +35,7 @@ namespace BloodLoop.Domain.Donors
         
         public Donor(DonorId id, AccountId accountId, Pesel pesel, GenderType gender, DateTime birthDay) : base(id)
         {
-            if (pesel is null || Pesel.IsValid() == false)
+            if (pesel is null || pesel.IsValid() == false)
                 throw new DomainException($"Provided {nameof(Pesel)} is invalid");
 
             AccountId = Guard.Against.NullOrDefault(accountId, nameof(AccountId));
