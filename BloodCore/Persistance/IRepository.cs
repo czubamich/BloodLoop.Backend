@@ -13,7 +13,7 @@ namespace BloodCore.Persistance
         IUnitOfWork UnitOfWork { get; }
     }
 
-    public interface IRepository<TAggregate, TIdentity> : IRepository
+    public interface IRepository<TAggregate, in TIdentity> : IRepository
          where TAggregate : IAggregateRoot<TIdentity>
          where TIdentity : Identity
     {

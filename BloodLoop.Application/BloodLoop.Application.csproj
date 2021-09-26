@@ -15,6 +15,7 @@
     <Folder Include="Donations\Queries\" />
     <Folder Include="Donations\Shared\" />
     <Folder Include="Shared\" />
+    <Folder Include="Tests\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

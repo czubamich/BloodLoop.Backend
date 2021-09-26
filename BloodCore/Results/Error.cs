@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace BloodCore.Common
+namespace BloodCore.Results
 {
     public abstract class Error
     {

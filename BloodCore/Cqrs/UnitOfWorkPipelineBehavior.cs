@@ -33,7 +33,7 @@ namespace BloodCore.Api
 
                     foreach(var domainEvent in _unitOfWork.Aggregates.SelectMany(x => x.DomainEvents).ToList())
                     {
-                        await _mediator.Publish(domainEvent);
+                        await _mediator.Publish(domainEvent, cancellationToken);
                     }
 
                     await _unitOfWork.SaveChangesAsync();

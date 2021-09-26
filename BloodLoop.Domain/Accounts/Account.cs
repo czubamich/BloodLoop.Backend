@@ -29,21 +29,23 @@ namespace BloodLoop.Domain.Accounts
         { 
         }
 
-        public Account(AccountId id, string userName, string email, string passwordHash, DateTime createdAt)
+        public Account(AccountId id, string userName, string email, DateTime createdAt)
         {
             Id = id;
             UserName = userName;
             Email = email;
-            PasswordHash = passwordHash;
-            createdAt = DateTime.Now;
+            CreatedDate = createdAt;
         }
 
         #endregion
 
         #region Creations
 
-        public Account(AccountId id, string userName, string email, string passwordHash)
-            => new Account(id, userName, email, passwordHash, DateTime.Now);
+        public static Account Create(AccountId id, string userName, string email)
+            => new Account(id, userName, email, DateTime.Now);
+
+        public static Account Create(string userName, string email)
+            => new Account(AccountId.New, userName, email, DateTime.Now);
 
         #endregion
 

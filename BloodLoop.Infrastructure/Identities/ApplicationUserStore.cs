@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Infrastructure.Identities
 {
-    class ApplicationUserStore : UserStoreBase<Account, IdentityRole<AccountId>, AccountId, IdentityUserClaim<AccountId>, IdentityUserRole<AccountId>, IdentityUserLogin<AccountId>, IdentityUserToken<AccountId>, IdentityRoleClaim<AccountId>>
+    public class ApplicationUserStore : UserStoreBase<Account, IdentityRole<AccountId>, AccountId, IdentityUserClaim<AccountId>, IdentityUserRole<AccountId>, IdentityUserLogin<AccountId>, IdentityUserToken<AccountId>, IdentityRoleClaim<AccountId>>
     {
         public ApplicationUserStore(IdentityErrorDescriber describer) : base(describer)
         {

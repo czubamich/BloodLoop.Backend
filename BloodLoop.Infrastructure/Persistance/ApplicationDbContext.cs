@@ -14,11 +14,19 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using BloodLoop.Domain.Donations;
+using BloodLoop.Domain.Donors;
+using BloodLoop.Infrastructure.Identities;
 
 namespace BloodLoop.Infrastructure.Persistance
 {
     public class ApplicationDbContext : IdentityDbContext<Account, IdentityRole<AccountId>, AccountId>, IUnitOfWork
     {
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Donor> Donors { get; set; }
+        public DbSet<Donation> Donations { get; set; }
+        public DbSet<DonationType> DonationTypes { get; set; }
+
         private IDbContextTransaction _dbContextTransaction;
         private IList<IAggregateRoot> _aggregates;
 

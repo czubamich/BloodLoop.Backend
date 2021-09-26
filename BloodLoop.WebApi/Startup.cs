@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BloodCore.AspNet;
+using BloodCore.Cqrs;
 using BloodLoop.Infrastructure;
 using BloodLoop.Domain.Accounts;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,9 @@ using Microsoft.EntityFrameworkCore;
 using BloodLoop.Infrastructure.Persistance;
 using BloodCore.Domain;
 using BloodCore.Persistance;
+using BloodLoop.Domain.Settings;
+using BloodLoop.Infrastructure.Identities;
+using BloodLoop.Infrastructure.Settings;
 
 namespace BloodLoop.WebApi
 {
@@ -47,16 +51,40 @@ namespace BloodLoop.WebApi
                     opt => opt.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name));
             });
 
+            AddOptions(services);
+
             services.AddScoped<IUnitOfWork>(x => x.GetService<ApplicationDbContext>());
 
             services.Configure<DataProtectionTokenProviderOptions>(options =>
                 options.TokenLifespan = TimeSpan.FromHours(3));
 
-            services.AddAuthentication()
-                .AddCookie();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();
+
+            services.AddIdentityCore<Account>(
+                    opt =>
+                    {
+                        opt.SignIn.RequireConfirmedEmail = false;
+                        opt.User.RequireUniqueEmail = true;
+
+                        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
+                        opt.Lockout.MaxFailedAccessAttempts = 3;
+
+                        opt.Password.RequireDigit = true;
+                        opt.Password.RequireLowercase = true;
+                        opt.Password.RequireUppercase = true;
+                        opt.Password.RequireNonAlphanumeric = true;
+                    })
+                .AddRoles<IdentityRole<AccountId>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services
+                .AddScoped<IUserClaimsPrincipalFactory<Account>, AccountClaimsPrincipalFactory>();
+
+            services.AddCqrs();
+
+            services.AddBloodLoopAuthentication(Configuration);
 
             services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
 
@@ -65,6 +93,16 @@ namespace BloodLoop.WebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BloodLoop.WebApi", Version = "v1" });
             });
+        }
+
+        public IServiceCollection AddOptions(IServiceCollection services)
+        {
+            services
+                .AddOptions<AuthenticationSettings>()
+                .Bind(Configuration.GetSection(AuthenticationSettings.SECTION))
+                .ValidateDataAnnotations();
+
+            return services;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext)

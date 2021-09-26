@@ -14,8 +14,8 @@ namespace BloodLoop.Domain.Donors
 {
     public class Donor : AggregateRoot<DonorId>
     {
-        public AccountId AccountId { get; init; }
-        public Account Account { get; }
+        public AccountId AccountId { get; private set; }
+        public Account Account { get; private set; }
 
         [ProtectedPersonalData]
         public Pesel Pesel { get; private set; }
@@ -32,28 +32,33 @@ namespace BloodLoop.Domain.Donors
         public Donor()
         {
         }
-        
-        public Donor(DonorId id, AccountId accountId, Pesel pesel, GenderType gender, DateTime birthDay) : base(id)
-        {
-            if (pesel is null || pesel.IsValid() == false)
-                throw new DomainException($"Provided {nameof(Pesel)} is invalid");
 
+        public Donor(DonorId id, AccountId accountId, GenderType gender, DateTime birthDay)
+        {
             AccountId = Guard.Against.NullOrDefault(accountId, nameof(AccountId));
-            Pesel = pesel;
             ChangeGender(gender);
             ChangeBirthDay(birthDay);
         }
 
+        public Donor(DonorId id, Account account, GenderType gender, DateTime birthDay)
+        {
+            SetAccount(account);
+            ChangeGender(gender);
+            ChangeBirthDay(birthDay);
+        }
 
         #endregion
 
         #region Creations
 
-        internal static Donor Create(DonorId id, AccountId accountId, Pesel pesel, GenderType gender, DateTime birthDay)
-            => new Donor(id, accountId, pesel, gender, birthDay);
+        internal static Donor Create(DonorId id, Account account, GenderType gender, DateTime birthDay)
+            => new Donor(id, account, gender, birthDay);
 
-        internal static Donor Create(AccountId accountId, Pesel pesel, GenderType gender, DateTime birthDay)
-            => new Donor(DonorId.New, accountId, pesel, gender, birthDay);
+        internal static Donor Create(Account account, GenderType gender, DateTime birthDay)
+            => new Donor(DonorId.New, account, gender, birthDay);
+
+        internal static Donor Create(AccountId accountId, GenderType gender, DateTime birthDay)
+            => new Donor(DonorId.New, accountId, gender, birthDay);
 
         #endregion
 
@@ -72,7 +77,31 @@ namespace BloodLoop.Domain.Donors
 
             return this;
         }
-         
+
+        public Donor SetPesel(Pesel pesel)
+        {
+            if (Pesel is not null)
+                throw new DomainException("Pesel already set");
+
+            if (pesel.IsValid())
+                throw new DomainException("Provided pesel is invalid");
+
+            Pesel = Guard.Against.Null(pesel, nameof(Pesel));
+
+            return this;
+        }
+
+        internal Donor SetAccount(Account account)
+        {
+            if (Account is not null || AccountId is not null)
+                throw new DomainException("Account already associated");
+
+            Account = account;
+            AccountId = account.Id;
+
+            return this;
+        }
+
         #endregion
     }
 }

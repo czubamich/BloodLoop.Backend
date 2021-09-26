@@ -1,31 +1,42 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Threading.Tasks;
+using BloodLoop.Domain.Settings;
+using BloodLoop.Infrastructure.Settings;
+using Microsoft.Extensions.Configuration;
 
 namespace BloodLoop.Infrastructure.Identities
 {
     public static class IdentityServiceCollectionExt
     {
-        public static IdentityBuilder AddIdentityCore<TUser>(this IServiceCollection services, Action<IdentityOptions> setupAction) where TUser : class
+        public static void AddBloodLoopAuthentication(this IServiceCollection service, IConfiguration configuration)
         {
-            services.AddOptions().AddLogging();
-            services.TryAddScoped<IUserValidator<TUser>, UserValidator<TUser>>();
-            services.TryAddScoped<IPasswordValidator<TUser>, PasswordValidator<TUser>>();
-            services.TryAddScoped<IPasswordHasher<TUser>, PasswordHasher<TUser>>();
-            services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
-            services.TryAddScoped<IUserClaimsPrincipalFactory<TUser>, UserClaimsPrincipalFactory<TUser>>();
-            services.TryAddScoped<UserManager<TUser>, UserManager<TUser>>();
-            services.TryAddScoped<IdentityErrorDescriber>();
+            var AuthSettings = configuration
+                .GetSection(AuthenticationSettings.SECTION)
+                .Get<AuthenticationSettings>();
 
-            if (setupAction != null)
-                services.Configure<IdentityOptions>(setupAction);
+            service.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
 
-            return new IdentityBuilder(typeof(TUser), services);
+                        ValidIssuer = AuthSettings.Issuer,
+                        ValidAudience = AuthSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthSettings.SecretKey))
+                    };
+                });
         }
     }
 }
