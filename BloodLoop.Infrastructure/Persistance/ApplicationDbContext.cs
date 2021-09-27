@@ -20,7 +20,7 @@ using BloodLoop.Infrastructure.Identities;
 
 namespace BloodLoop.Infrastructure.Persistance
 {
-    public class ApplicationDbContext : IdentityDbContext<Account, IdentityRole<AccountId>, AccountId>, IUnitOfWork
+    public class ApplicationDbContext : IdentityDbContext<Account, Role, AccountId>, IUnitOfWork
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Donor> Donors { get; set; }

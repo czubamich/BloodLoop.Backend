@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Infrastructure.Identities
 {
-    public class ApplicationUserStore : UserStoreBase<Account, IdentityRole<AccountId>, AccountId, IdentityUserClaim<AccountId>, IdentityUserRole<AccountId>, IdentityUserLogin<AccountId>, IdentityUserToken<AccountId>, IdentityRoleClaim<AccountId>>
+    public class ApplicationUserStore : UserStoreBase<Account, Role, AccountId, IdentityUserClaim<AccountId>, IdentityUserRole<AccountId>, IdentityUserLogin<AccountId>, IdentityUserToken<AccountId>, IdentityRoleClaim<AccountId>>
     {
         public ApplicationUserStore(IdentityErrorDescriber describer) : base(describer)
         {
@@ -118,7 +118,7 @@ namespace BloodLoop.Infrastructure.Identities
             throw new NotImplementedException();
         }
 
-        protected override Task<IdentityRole<AccountId>> FindRoleAsync(string normalizedRoleName, CancellationToken cancellationToken)
+        protected override Task<Role> FindRoleAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

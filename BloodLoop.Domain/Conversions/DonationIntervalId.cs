@@ -9,7 +9,7 @@ namespace BloodLoop.Domain.DonationHelpers
 {
     public class DonationIntervalId : Identity<DonationIntervalId>
     {
-        public DonationIntervalId(Guid id) : base(id)
+        private DonationIntervalId(Guid id) : base(id)
         {
         }
     }

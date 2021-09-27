@@ -35,7 +35,7 @@ namespace BloodCore.Domain
         protected Identity(Guid id) : base(id) { }
 
         public static TIdentity Of(Guid id) => (TIdentity) Activator.CreateInstance
-        (typeof(TIdentity), BindingFlags.NonPublic | BindingFlags.Instance, (Binder?) null, new object[] {id}, (CultureInfo?) null);
+        (typeof(TIdentity), BindingFlags.NonPublic | BindingFlags.Instance, null, new object[] {id}, null);
 
         public static TIdentity Of(string id) => Of(Guid.Parse(id));
 

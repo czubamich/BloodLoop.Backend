@@ -9,7 +9,7 @@ namespace BloodLoop.Domain.Donors
 {
     public class DonorId : Identity<DonorId>
     {
-        public DonorId(Guid id) : base(id)
+        private DonorId(Guid id) : base(id)
         {
         }
     }

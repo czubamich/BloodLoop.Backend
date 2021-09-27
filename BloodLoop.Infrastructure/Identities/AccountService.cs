@@ -19,7 +19,7 @@ namespace BloodLoop.Infrastructure.Identities
         private readonly IMediator _mediator;
 
         public AccountService(UserManager<Account> userManager,
-            RoleManager<IdentityRole<AccountId>> roleManager,
+            RoleManager<Role> roleManager,
             IDonorRepository donorRepository,
             IMediator mediator)
         {
@@ -34,7 +34,7 @@ namespace BloodLoop.Infrastructure.Identities
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(donor.Account, Roles.Donor.ToString());
+                await _userManager.AddToRoleAsync(donor.Account, Role.Donor.ToString());
 
                 await _donorRepository.AddAsync(donor);
             }

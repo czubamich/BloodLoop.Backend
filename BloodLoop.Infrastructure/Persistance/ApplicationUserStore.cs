@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Infrastructure.Persistance
 {
-    class ApplicationUserStore : UserStore<Account, IdentityRole<AccountId>, ApplicationDbContext, AccountId>
+    class ApplicationUserStore : UserStore<Account, Role, ApplicationDbContext, AccountId>
     {
         public ApplicationUserStore(ApplicationDbContext context) : base(context)
         {

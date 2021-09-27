@@ -13,12 +13,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using BloodCore.AspNet;
 using BloodCore.Cqrs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BloodLoop.Infrastructure.Persistance;
 using BloodCore.Persistance;
+using BloodLoop.Domain.Accounts;
 using BloodLoop.Infrastructure.Identities;
 using BloodLoop.Infrastructure.Settings;
 using FluentValidation.AspNetCore;
@@ -38,8 +40,6 @@ namespace BloodLoop.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             IEnumerable<Assembly> appAssemblies = GetAssemblies();
-
-            services.AddSecurity(Configuration);
 
             services.AddFluentValidation(opt =>
             {
@@ -63,13 +63,13 @@ namespace BloodLoop.WebApi
             services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();
 
-            services.AddSecurity(Configuration);
-
             services.AddCqrs();
 
             services.AddBloodLoopAuthentication(Configuration);
 
             services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
+
+            services.AddSecurity(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
