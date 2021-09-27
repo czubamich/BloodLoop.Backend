@@ -5,13 +5,13 @@ namespace BloodCore.Common
     public class ErrorResponse<T> where T : class
     {
         public int StatusCode { get; init; }
-        public string Message { get; init; }
+        public string Topic { get; init; }
         public T Errors { get; init; }
 
         public ErrorResponse(int statusCode, string message, T errors)
         {
             StatusCode = statusCode;
-            Message = message;
+            Topic = message;
             Errors = errors;
         }
     }

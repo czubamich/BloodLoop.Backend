@@ -29,8 +29,10 @@ namespace BloodLoop.Infrastructure.Identities
         private readonly IRefreshTokenStore _refreshTokenStore;
         private readonly ITokenFactory _tokenFactory;
 
-        private const string FAIL_MESSAGE = "Invalid username/e-mail or password";
-        private const string EMAIL_MESSAGE = "Email confirmation is required";
+        const string InvalidRefreshTokenMsg = "Invalid refresh token";
+        const string InvalidCredentialsMsg = "Invalid username/e-mail or password";
+        const string EmailConfirmationRequiredMsg = "Email confirmation is required";
+        private const string TokenDoesNotExistMsg = "Refresh token does not exist";
 
         public IdentityService(
             UserManager<Account> userManager,
@@ -51,10 +53,10 @@ namespace BloodLoop.Infrastructure.Identities
                           ?? await _userManager.FindByNameAsync(userNameOrEmail);
 
             if (account is null || !await _userManager.CheckPasswordAsync(account, password))
-                return AuthenticationResult.Failed(FAIL_MESSAGE);
+                return AuthenticationResult.Failed(InvalidCredentialsMsg);
 
             if (_userManager.Options.SignIn.RequireConfirmedEmail && !await _userManager.IsEmailConfirmedAsync(account))
-                return AuthenticationResult.Failed(EMAIL_MESSAGE);
+                return AuthenticationResult.Failed(EmailConfirmationRequiredMsg);
 
             return await AuthenticateAsync(account, cancellationToken);
         }
@@ -78,19 +80,19 @@ namespace BloodLoop.Infrastructure.Identities
             var principalFromToken = GetPrincipalFromToken(refreshToken);
 
             if (principalFromToken is null)
-                throw new AuthenticationException("Invalid refresh token");
+                return AuthenticationResult.Failed(InvalidRefreshTokenMsg);
 
             Guid refreshTokenId = Guid.Parse(principalFromToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
 
             RefreshToken storedRefreshToken = await _refreshTokenStore.GetByIdAsync(refreshTokenId, cancellationToken);
 
             if (storedRefreshToken is null)
-                throw new AuthenticationException("Refresh token does not exist");
+                return AuthenticationResult.Failed(TokenDoesNotExistMsg);
 
             AccountId accountId = AccountId.Of(principalFromToken.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
 
             if (storedRefreshToken.AccountId != accountId)
-                throw new AuthenticationException("Invalid refresh token");
+                return AuthenticationResult.Failed(InvalidRefreshTokenMsg);
 
             Account account = await _userManager.GetUserAsync(principalFromToken);
 
@@ -100,29 +102,39 @@ namespace BloodLoop.Infrastructure.Identities
 
         public async Task RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken)
         {
-            var principalFromToken = GetPrincipalFromToken(refreshToken);
-
-            if (principalFromToken is null)
-                throw new AuthenticationException("Invalid refresh token");
-
-            Guid refreshTokenId = Guid.Parse(principalFromToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
-
-            RefreshToken storedRefreshToken = await _refreshTokenStore.GetByIdAsync(refreshTokenId, cancellationToken);
-
-            if (storedRefreshToken is null)
-                throw new AuthenticationException("This refresh token does not exist");
-
-            AccountId accountId = AccountId.Of(principalFromToken.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
-
-            if (storedRefreshToken.AccountId != accountId)
-                throw new AuthenticationException("Invalid refresh token");
+            var storedRefreshToken = await GetStoredRefreshToken(refreshToken, cancellationToken);
 
             await _refreshTokenStore.RemoveAsync(storedRefreshToken, cancellationToken);
         }
 
-        public async Task SignOutAsync(AccountId accountId, CancellationToken cancellationToken)
+        public async Task SignOutAsync(AccountId accountId, string refreshToken, CancellationToken cancellationToken)
         {
+            await GetStoredRefreshToken(refreshToken, cancellationToken);
+
             await _refreshTokenStore.RemoveByAccount(accountId, cancellationToken);
+        }
+
+        private async Task<RefreshToken> GetStoredRefreshToken(string refreshToken, CancellationToken cancellationToken)
+        {
+            var principalFromToken = GetPrincipalFromToken(refreshToken);
+
+            if (principalFromToken is null)
+                throw new AuthenticationException(InvalidRefreshTokenMsg);
+
+            Guid refreshTokenId =
+                Guid.Parse(principalFromToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
+
+            RefreshToken storedRefreshToken = await _refreshTokenStore.GetByIdAsync(refreshTokenId, cancellationToken);
+
+            if (storedRefreshToken is null)
+                throw new AuthenticationException(TokenDoesNotExistMsg);
+
+            AccountId accountId =
+                AccountId.Of(principalFromToken.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value);
+
+            if (storedRefreshToken.AccountId != accountId)
+                throw new AuthenticationException(InvalidRefreshTokenMsg);
+            return storedRefreshToken;
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
@@ -132,17 +144,12 @@ namespace BloodLoop.Infrastructure.Identities
             try
             {
                 var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validatedToken);
-                if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
-                {
-                    return null;
-                }
+                if (IsJwtWithValidSecurityAlgorithm(validatedToken))
+                    return principal;
+            }
+            catch { }
 
-                return principal;
-            }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
         private bool IsJwtWithValidSecurityAlgorithm(SecurityToken validatedToken)

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using BloodCore.Api;
+using BloodCore.Common;
+using BloodCore.Results;
 using BloodLoop.Api.Requests;
 using BloodLoop.Api.Responses;
 using BloodLoop.Application.Services;
@@ -51,7 +55,7 @@ namespace BloodLoop.WebApi.Controllers
             string refreshToken = request.RefreshToken ?? Request.Cookies[REFRESH_TOKEN_COOKIE_KEY];
 
             AuthenticationResult result =
-                await _identityService.RefreshToken(request.RefreshToken, cancellationToken);
+                await _identityService.RefreshToken(refreshToken, cancellationToken);
 
             if (!result.Success)
                 return result;
@@ -77,9 +81,16 @@ namespace BloodLoop.WebApi.Controllers
             string refreshToken = request.RefreshToken ?? Request.Cookies[REFRESH_TOKEN_COOKIE_KEY];
 
             if (string.IsNullOrWhiteSpace(request.RefreshToken))
-                return BadRequest();
+                return BadRequest(ErrorResponse.FromMessage(StatusCodes.Status400BadRequest, "Revoke Token has failed", $"Missing required field: {nameof(request.RefreshToken)}"));
 
-            await _identityService.RevokeRefreshToken(request.RefreshToken, cancellationToken);
+            try
+            {
+                await _identityService.RevokeRefreshToken(request.RefreshToken, cancellationToken);
+            }
+            catch (AuthenticationException e)
+            {
+                return BadRequest(ErrorResponse.FromMessage(StatusCodes.Status400BadRequest, "Revoke Token has failed", e.Message));
+            }
 
             return Ok();
         }
