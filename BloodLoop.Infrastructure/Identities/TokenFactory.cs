@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using BloodCore;
 using BloodCore.AspNet;
 using BloodLoop.Domain.Accounts;
-using BloodLoop.Domain.Settings;
 using BloodLoop.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

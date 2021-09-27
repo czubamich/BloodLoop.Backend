@@ -3,7 +3,6 @@ using BloodLoop.WebApi.Extensions;
 using BloodLoop.WebApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,14 +15,10 @@ using System.Linq;
 using System.Reflection;
 using BloodCore.AspNet;
 using BloodCore.Cqrs;
-using BloodLoop.Infrastructure;
-using BloodLoop.Domain.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BloodLoop.Infrastructure.Persistance;
-using BloodCore.Domain;
 using BloodCore.Persistance;
-using BloodLoop.Domain.Settings;
 using BloodLoop.Infrastructure.Identities;
 using BloodLoop.Infrastructure.Settings;
 
@@ -61,26 +56,7 @@ namespace BloodLoop.WebApi
             services.AddHttpContextAccessor();
             services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();
 
-            services.AddIdentityCore<Account>(
-                    opt =>
-                    {
-                        opt.SignIn.RequireConfirmedEmail = false;
-                        opt.User.RequireUniqueEmail = true;
-
-                        opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
-                        opt.Lockout.MaxFailedAccessAttempts = 3;
-
-                        opt.Password.RequireDigit = true;
-                        opt.Password.RequireLowercase = true;
-                        opt.Password.RequireUppercase = true;
-                        opt.Password.RequireNonAlphanumeric = true;
-                    })
-                .AddRoles<IdentityRole<AccountId>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services
-                .AddScoped<IUserClaimsPrincipalFactory<Account>, AccountClaimsPrincipalFactory>();
+            services.AddSecurity(Configuration);
 
             services.AddCqrs();
 

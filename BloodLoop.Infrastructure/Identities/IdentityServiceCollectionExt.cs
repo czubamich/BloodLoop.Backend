@@ -3,7 +3,6 @@ using System;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using BloodLoop.Domain.Settings;
 using BloodLoop.Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 
