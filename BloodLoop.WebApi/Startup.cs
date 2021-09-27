@@ -21,6 +21,7 @@ using BloodLoop.Infrastructure.Persistance;
 using BloodCore.Persistance;
 using BloodLoop.Infrastructure.Identities;
 using BloodLoop.Infrastructure.Settings;
+using FluentValidation.AspNetCore;
 
 namespace BloodLoop.WebApi
 {
@@ -30,7 +31,7 @@ namespace BloodLoop.WebApi
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -39,6 +40,12 @@ namespace BloodLoop.WebApi
             IEnumerable<Assembly> appAssemblies = GetAssemblies();
 
             services.AddSecurity(Configuration);
+
+            services.AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblies(appAssemblies);
+                opt.LocalizationEnabled = false;
+            });
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
