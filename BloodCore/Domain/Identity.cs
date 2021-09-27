@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,10 +34,11 @@ namespace BloodCore.Domain
     {
         protected Identity(Guid id) : base(id) { }
 
-        public static TIdentity Of(Guid id) => (TIdentity)Activator.CreateInstance(typeof(TIdentity), new[] { id } );
+        public static TIdentity Of(Guid id) => (TIdentity) Activator.CreateInstance
+        (typeof(TIdentity), BindingFlags.NonPublic | BindingFlags.Instance, (Binder?) null, new object[] {id}, (CultureInfo?) null);
 
-        public static TIdentity Of(string id) => Of(new Guid(id));
+        public static TIdentity Of(string id) => Of(Guid.Parse(id));
 
-        public static TIdentity New => (TIdentity)Activator.CreateInstance(typeof(TIdentity), new[] { Guid.NewGuid() });
+        public static TIdentity New => Of(Guid.NewGuid());
     }
 }
