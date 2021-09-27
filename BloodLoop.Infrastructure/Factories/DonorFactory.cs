@@ -5,7 +5,7 @@ using BloodLoop.Domain.Donors;
 
 namespace BloodLoop.Infrastructure.Factories
 {
-    [Injectable]
+    [Injectable(IsScoped = true)]
     class DonorFactory : IDonorFactory
     {
         public Donor Create(string userName, string email, string firstName, string lastName, 

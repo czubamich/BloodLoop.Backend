@@ -35,6 +35,7 @@ namespace BloodLoop.Domain.Donors
 
         public Donor(DonorId id, AccountId accountId, GenderType gender, DateTime birthDay)
         {
+            Id = Guard.Against.NullOrDefault(id, nameof(Id));
             AccountId = Guard.Against.NullOrDefault(accountId, nameof(AccountId));
             ChangeGender(gender);
             ChangeBirthDay(birthDay);
@@ -42,6 +43,7 @@ namespace BloodLoop.Domain.Donors
 
         public Donor(DonorId id, Account account, GenderType gender, DateTime birthDay)
         {
+            Id = Guard.Against.NullOrDefault(id, nameof(Id));
             SetAccount(account);
             ChangeGender(gender);
             ChangeBirthDay(birthDay);
@@ -73,7 +75,7 @@ namespace BloodLoop.Domain.Donors
 
         public Donor ChangeBirthDay(DateTime birthDay)
         {
-            BirthDay = Guard.Against.InvalidInput(birthDay, nameof(BirthDay), b => birthDay.PassedLongerThan(DateTime.Now, DateTime.Now.DifferYears(-16)));
+            BirthDay = Guard.Against.InvalidInput(birthDay, nameof(BirthDay), b => birthDay.PassedLongerThan(DateTime.UtcNow, DateTime.UtcNow.DifferYears(16)));
 
             return this;
         }
@@ -83,7 +85,7 @@ namespace BloodLoop.Domain.Donors
             if (Pesel is not null)
                 throw new DomainException("Pesel already set");
 
-            if (pesel.IsValid())
+            if (pesel.IsValid() == false)
                 throw new DomainException("Provided pesel is invalid");
 
             Pesel = Guard.Against.Null(pesel, nameof(Pesel));

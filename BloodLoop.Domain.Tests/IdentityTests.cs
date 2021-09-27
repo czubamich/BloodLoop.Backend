@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using BloodLoop.Domain.Accounts;
 using Xunit;
 
-namespace BloodLoop.Infrastructure.Tests
+namespace BloodLoop.Domain.Tests
 {
     public class IdentityTests
     {
