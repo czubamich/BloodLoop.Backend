@@ -5,16 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Accounts\Commands\" />
-    <Folder Include="Accounts\Queries\" />
-    <Folder Include="Accounts\Shared\" />
     <Folder Include="BloodBanks\Commands\" />
     <Folder Include="BloodBanks\Queries\" />
     <Folder Include="BloodBanks\Shared\" />
     <Folder Include="Donations\Commands\" />
     <Folder Include="Donations\Queries\" />
     <Folder Include="Donations\Shared\" />
-    <Folder Include="Shared\" />
     <Folder Include="Tests\Queries\" />
   </ItemGroup>
 
