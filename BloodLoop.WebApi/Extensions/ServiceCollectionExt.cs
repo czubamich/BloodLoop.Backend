@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Security.Cryptography;
-using BloodCore.Extensions;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using BloodCore.AspNet;
 using BloodLoop.Infrastructure.Identities;
 
 namespace BloodLoop.WebApi.Extensions
@@ -32,17 +32,20 @@ namespace BloodLoop.WebApi.Extensions
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            
+            StronglyTypedIdTypeDescriptor.AddStronglyTypedIdConverter(typeof(Domain.Accounts.Account).Assembly, idType =>
+            {
+                var typeOfIdentity = typeof(StronglyTypedIdConverter<>).MakeGenericType(idType);
+                TypeDescriptor.AddAttributes(idType, new TypeConverterAttribute(typeOfIdentity));
+            });
 
             services
                 .AddScoped<IUserClaimsPrincipalFactory<Account>, AccountClaimsPrincipalFactory>();
 
-            var sp = services.BuildServiceProvider();
-            CreateRoles(sp).Wait();
-
             return services;
         }
 
-        private static async Task CreateRoles(IServiceProvider serviceProvider)
+        public static async Task SeedRoles(this IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
 

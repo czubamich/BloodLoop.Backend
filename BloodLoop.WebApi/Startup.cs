@@ -88,9 +88,11 @@ namespace BloodLoop.WebApi
             return services;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext, IServiceProvider sp)
         {
             dbContext.Database.Migrate();
+
+            sp.SeedRoles().Wait();
 
             if (env.IsDevelopment())
             {
