@@ -53,6 +53,8 @@ namespace BloodLoop.WebApi
                     opt => opt.MigrationsAssembly(typeof(ApplicationDbContext).GetTypeInfo().Assembly.GetName().Name));
             });
 
+            services.AddSpecification();
+
             AddOptions(services);
 
             services.AddScoped<IUnitOfWork>(x => x.GetService<ApplicationDbContext>());

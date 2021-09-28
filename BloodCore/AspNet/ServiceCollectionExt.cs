@@ -5,11 +5,20 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 
 namespace BloodCore.AspNet
 {
     public static class ServiceCollectionExt
     {
+        public static IServiceCollection AddSpecification(this IServiceCollection services)
+        {
+            services.AddScoped<ISpecificationEvaluator, SpecificationEvaluator>();
+
+            return services;
+        }
+
         public static IServiceCollection RegisterInjectables(this IServiceCollection services, IEnumerable<Type> types)
         {
             var definitions = types
