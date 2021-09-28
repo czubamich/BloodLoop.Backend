@@ -50,7 +50,7 @@ namespace BloodLoop.Infrastructure.Identities
                 Audience = _authenticationOptions.Audience,
                 NotBefore = now,
                 Expires = now.AddMinutes(_authenticationOptions.AccessTokenLifetimeMinutes),
-                SigningCredentials = _signingCredentials
+                SigningCredentials = _signingCredentials,
             };
 
             SecurityToken securityToken = _jwtSecurityTokenHandler.CreateToken(tokenDescriptor);

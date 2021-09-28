@@ -23,7 +23,7 @@ namespace BloodLoop.Infrastructure.Persistance.Repositories
 
         public async Task<RefreshToken> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.RefreshTokens.FindAsync(id, cancellationToken);
+            return await _dbContext.RefreshTokens.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
@@ -43,7 +43,7 @@ namespace BloodLoop.Infrastructure.Persistance.Repositories
             var expiredTokens = await _dbContext.RefreshTokens.Where(x => x.IsExpired).ToListAsync(cancellationToken);
 
             _dbContext.RefreshTokens.RemoveRange(expiredTokens);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task RemoveByAccount(AccountId accountId, CancellationToken cancellationToken = default)
@@ -51,7 +51,7 @@ namespace BloodLoop.Infrastructure.Persistance.Repositories
             var accountsTokens = await _dbContext.RefreshTokens.Where(x => x.AccountId == accountId).ToListAsync(cancellationToken);
 
             _dbContext.RefreshTokens.RemoveRange(accountsTokens);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -11,8 +11,11 @@ using BloodLoop.Api.Responses;
 using BloodLoop.Application.Services;
 using BloodLoop.Domain.Accounts;
 using BloodLoop.Infrastructure.Identities.Interfaces;
+using BloodLoop.Infrastructure.Persistance;
 using BloodLoop.Infrastructure.Settings;
+using LanguageExt;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,6 +27,7 @@ namespace BloodLoop.Infrastructure.Identities
     class IdentityService : IIdentityService
     {
         private readonly UserManager<Account> _userManager;
+        private readonly RoleManager<Role> _roleManager;
         private readonly AuthenticationSettings _authenticationSettings;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly IRefreshTokenStore _refreshTokenStore;
@@ -38,13 +42,15 @@ namespace BloodLoop.Infrastructure.Identities
             UserManager<Account> userManager,
             IOptions<AuthenticationSettings> authenticationSettings,
             IRefreshTokenStore refreshTokenStore,
-            ITokenFactory tokenFactory)
+            ITokenFactory tokenFactory, 
+            RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _authenticationSettings = authenticationSettings?.Value ?? throw new ArgumentNullException(nameof(authenticationSettings));
             _tokenValidationParameters = _authenticationSettings.CreateTokenValidationParameters();
             _refreshTokenStore = refreshTokenStore;
             _tokenFactory = tokenFactory;
+            _roleManager = roleManager;
         }
 
         public async Task<AuthenticationResult> SignInAsync(string userNameOrEmail, string password, CancellationToken cancellationToken)
@@ -63,7 +69,23 @@ namespace BloodLoop.Infrastructure.Identities
 
         private async Task<AuthenticationResult> AuthenticateAsync(Account account, CancellationToken cancellationToken)
         {
-            JwtToken jwtAccessToken = _tokenFactory.Generate(account, await _userManager.GetClaimsAsync(account));
+            var claims = await _userManager.GetClaimsAsync(account);
+            var userRoles = await _userManager.GetRolesAsync(account);
+            foreach (var userRole in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                var role = await _roleManager.FindByNameAsync(userRole);
+                if (role != null)
+                {
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (Claim roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
+
+            JwtToken jwtAccessToken = _tokenFactory.Generate(account, claims);
 
             var refreshTokenLifeTime = TimeSpan.FromMinutes(_authenticationSettings.RefreshTokenLifetimeMinutes);
             RefreshToken refreshToken = new RefreshToken(account.Id, refreshTokenLifeTime);
@@ -134,6 +156,7 @@ namespace BloodLoop.Infrastructure.Identities
 
             if (storedRefreshToken.AccountId != accountId)
                 throw new AuthenticationException(InvalidRefreshTokenMsg);
+
             return storedRefreshToken;
         }
 

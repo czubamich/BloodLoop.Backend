@@ -5,7 +5,7 @@ using BloodLoop.Domain.Accounts;
 
 namespace BloodLoop.Infrastructure.Identities
 {
-    interface ITokenFactory
+    public interface ITokenFactory
     {
         JwtToken Generate(Account account, IEnumerable<Claim> claims);
         JwtToken Generate(RefreshToken refreshToken);

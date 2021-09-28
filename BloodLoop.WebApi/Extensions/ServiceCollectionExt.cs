@@ -39,9 +39,6 @@ namespace BloodLoop.WebApi.Extensions
                 TypeDescriptor.AddAttributes(idType, new TypeConverterAttribute(typeOfIdentity));
             });
 
-            services
-                .AddScoped<IUserClaimsPrincipalFactory<Account>, AccountClaimsPrincipalFactory>();
-
             return services;
         }
 

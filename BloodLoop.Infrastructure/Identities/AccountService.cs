@@ -3,6 +3,7 @@ using BloodCore;
 using BloodLoop.Application.Services;
 using BloodLoop.Domain.Accounts;
 using BloodLoop.Domain.Donors;
+using BloodLoop.Infrastructure.Persistance;
 using BloodLoop.Infrastructure.Settings;
 using FluentValidation;
 using MediatR;

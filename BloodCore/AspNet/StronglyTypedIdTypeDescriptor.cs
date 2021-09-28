@@ -11,7 +11,7 @@ namespace BloodCore.AspNet
         {
             assembly
                 .ExportedTypes
-                .Where(x => !x.IsGenericTypeDefinition && !x.IsAbstract && x.BaseType == typeof(Identity))
+                .Where(x => !x.IsGenericTypeDefinition && !x.IsAbstract && x.BaseType.BaseType == typeof(Identity))
                 .ToList().ForEach(idType =>
                 {
                     additionalAction?.Invoke(idType);
