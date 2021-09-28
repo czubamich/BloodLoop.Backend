@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BloodCore.Results;
+using BloodLoop.Application.Accounts;
 using BloodLoop.Application.Services;
-using BloodLoop.Application.Shared;
 using BloodLoop.Domain.Donors;
-using FluentValidation;
 using LanguageExt;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Unit = MediatR.Unit;
 
-namespace BloodLoop.Application.Accounts.Commands
+namespace BloodLoop.Application.Donations.Commands
 {
     public class RegisterDonorCommandHandler : IRequestHandler<RegisterDonorCommand, Either<Error, DonorDto>>
     {

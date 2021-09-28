@@ -1,11 +1,11 @@
 ﻿using System;
 using BloodCore.Cqrs;
 using BloodCore.Results;
-using BloodLoop.Application.Shared;
+using BloodLoop.Application.Accounts;
 using BloodLoop.Domain.Donors;
 using LanguageExt;
 
-namespace BloodLoop.Application.Accounts.Commands
+namespace BloodLoop.Application.Donations.Commands
 {
     public class RegisterDonorCommand : ICommand<Either<Error, DonorDto>>
     {

@@ -15,7 +15,7 @@ namespace BloodLoop.Domain.Donors
     public class Donor : AggregateRoot<DonorId>
     {
         public AccountId AccountId { get; private set; }
-        public Account Account { get; private set; }
+        public virtual Account Account { get; private set; }
 
         [ProtectedPersonalData]
         public Pesel Pesel { get; private set; }
@@ -25,7 +25,7 @@ namespace BloodLoop.Domain.Donors
         public DateTime BirthDay { get; private set; }
 
         public List<Donation> _donations;
-        public IReadOnlyCollection<Donation> Donations => _donations;
+        public virtual IReadOnlyCollection<Donation> Donations => _donations;
 
         #region Constructors
 

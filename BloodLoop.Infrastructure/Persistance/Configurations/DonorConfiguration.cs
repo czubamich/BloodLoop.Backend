@@ -21,7 +21,7 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                 .HasConversion(x => x.Id, id => DonorId.Of(id));
 
             builder
-                .HasOne<Account>(x => x.Account)
+                .HasOne(x => x.Account)
                 .WithOne()
                 .HasForeignKey<Donor>(x => x.AccountId);
 

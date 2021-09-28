@@ -7,7 +7,7 @@ using BloodLoop.Domain.Donors;
 using FluentValidation;
 using FluentValidation.Validators;
 
-namespace BloodLoop.Application.Accounts.Commands.RegisterDonor
+namespace BloodLoop.Application.Donations.Commands.RegisterDonor
 {
     public class RegisterDonorCommandValidator : AbstractValidator<RegisterDonorCommand>
     {
