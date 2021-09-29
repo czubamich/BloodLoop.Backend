@@ -8,8 +8,8 @@ namespace BloodLoop.Infrastructure.Factories
     [Injectable(IsScoped = true)]
     class DonorFactory : IDonorFactory
     {
-        public Donor Create(string userName, string email, string firstName, string lastName, 
-            GenderType gender, DateTime birthDay)
+        public Donor Create(string userName, string email, GenderType gender, 
+            string firstName, string lastName, DateTime birthDay)
         {
             Account account = Account.Create(userName, email)
                 .SetFirstName(firstName)
@@ -18,12 +18,11 @@ namespace BloodLoop.Infrastructure.Factories
             return Donor.Create(account, gender, birthDay);
         }
 
-        public Donor Create(string userName, string email, string firstName, string lastName, 
-            GenderType gender, DateTime birthDay, Pesel pesel)
+        public Donor Create(string userName, string email, GenderType gender, 
+            string firstName, string lastName, DateTime birthDay, Pesel pesel)
         {
-            Donor donor = Create(userName, email, firstName, lastName, gender, birthDay);
-
-            donor.SetPesel(pesel);
+            Donor donor = Create(userName, email, gender, firstName, lastName, birthDay)
+                .SetPesel(pesel);
 
             return donor;
         }

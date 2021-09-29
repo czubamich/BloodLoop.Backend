@@ -5,7 +5,9 @@ namespace BloodLoop.Domain.Donors
 {
     public interface IDonorFactory
     {
-        Donor Create(string userName, string email, string firstName, string lastName, GenderType gender, DateTime birthDay);
-        Donor Create(string userName, string email, string firstName, string lastName, GenderType gender, DateTime birthDay, Pesel pesel);
+        Donor Create(string userName, string email, GenderType gender, string firstName, string lastName,
+            DateTime birthDay);
+        Donor Create(string userName, string email, GenderType gender, string firstName, string lastName,
+            DateTime birthDay, Pesel pesel);
     }
 }

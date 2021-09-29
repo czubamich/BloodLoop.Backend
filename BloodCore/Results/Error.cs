@@ -50,10 +50,6 @@ namespace BloodCore.Results
 
         public sealed class Validation : Error
         {
-            public Validation()
-            {
-            }
-
             private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
             public IDictionary<string, string[]> Errors => _errors.ToDictionary(k => k.Key, v => v.Value.ToArray());

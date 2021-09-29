@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BloodCore.Domain
 {
+    //https://github.com/vkhorikov/CSharpFunctionalExtensions/blob/master/CSharpFunctionalExtensions/ValueObject/ValueObject.cs
     [Serializable]
     public abstract class ValueObject : IComparable, IComparable<ValueObject>
     {

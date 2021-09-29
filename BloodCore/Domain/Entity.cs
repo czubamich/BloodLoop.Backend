@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace BloodCore.Domain
 {
+    //https://github.com/vkhorikov/CSharpFunctionalExtensions/blob/master/CSharpFunctionalExtensions/Entity/Entity.cs
     public abstract class Entity<TIdentity> : IEquatable<Entity<TIdentity>>, IEntity<TIdentity> where TIdentity : Identity
     {
         public TIdentity Id { get; protected set; }
