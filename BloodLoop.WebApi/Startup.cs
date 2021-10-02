@@ -63,7 +63,7 @@ namespace BloodLoop.WebApi
                 options.TokenLifespan = TimeSpan.FromHours(3));
 
             services.AddHttpContextAccessor();
-            services.AddSingleton<ICurrentAccountAccessor, CurrentAccountAccessor>();
+            services.AddSingleton<IApplicationContext, ApplicationContext>();
 
             services.AddCqrs();
 

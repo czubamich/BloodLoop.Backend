@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.WebApi.Services
 {
-    public class CurrentAccountAccessor : ICurrentAccountAccessor
+    public class ApplicationContext : IApplicationContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CurrentAccountAccessor(IHttpContextAccessor httpContextAccessor)
+        public ApplicationContext(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
         public AccountId AccountId => _httpContextAccessor.HttpContext.User.AccountId();
+        public IEnumerable<Role> Roles => _httpContextAccessor.HttpContext.User.Roles().Select(x => new Role(x));
     }
 }

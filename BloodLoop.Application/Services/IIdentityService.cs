@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using BloodLoop.Api.Responses;
+using BloodLoop.Application.Auth.Responses;
 using BloodLoop.Domain.Accounts;
 
 namespace BloodLoop.Application.Services

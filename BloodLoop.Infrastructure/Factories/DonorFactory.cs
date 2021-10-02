@@ -15,16 +15,7 @@ namespace BloodLoop.Infrastructure.Factories
                 .SetFirstName(firstName)
                 .SetLastName(lastName);
 
-            return Donor.Create(account, gender, birthDay);
-        }
-
-        public Donor Create(string userName, string email, GenderType gender, 
-            string firstName, string lastName, DateTime birthDay, Pesel pesel)
-        {
-            Donor donor = Create(userName, email, gender, firstName, lastName, birthDay)
-                .SetPesel(pesel);
-
-            return donor;
+            return Donor.Create(DonorId.Of(account.Id), account, gender, birthDay);
         }
     }
 }

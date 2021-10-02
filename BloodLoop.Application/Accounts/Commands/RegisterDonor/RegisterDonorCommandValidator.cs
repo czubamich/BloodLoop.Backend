@@ -28,6 +28,9 @@ namespace BloodLoop.Application.Donations.Commands.RegisterDonor
             RuleFor(x => x.LastName)
                 .NotEmpty();
 
+            RuleFor(x => x.Pesel)
+                .Must(x => (new Pesel(x).IsValid()));
+
             RuleFor(x => x.BirthDay)
                 .GreaterThan(DateTime.UtcNow.AddYears(-100));
 

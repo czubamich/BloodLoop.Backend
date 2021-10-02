@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,19 +15,19 @@ namespace BloodLoop.Application.Accounts.Queries
 {
     class GetCurrentDonorInfoQueryHandler : IRequestHandler<GetCurrentDonorInfoQuery, Either<Error, DonorDto>>
     {
-        private readonly ICurrentAccountAccessor _currentAccountAccessor;
+        private readonly IApplicationContext _appContext;
         private readonly IDonorRepository _donorRepository;
 
-        public GetCurrentDonorInfoQueryHandler(IDonorRepository donorRepository, ICurrentAccountAccessor currentAccountAccessor)
+        public GetCurrentDonorInfoQueryHandler(IDonorRepository donorRepository, IApplicationContext appContext)
         {
             _donorRepository = donorRepository;
-            _currentAccountAccessor = currentAccountAccessor;
+            _appContext = appContext;
         }
 
         public async Task<Either<Error, DonorDto>> Handle(GetCurrentDonorInfoQuery request, CancellationToken cancellationToken)
         {
-            var accountId = _currentAccountAccessor.AccountId;
-            var donorDto = (DonorDto)null;// await _donorRepository.Find<DonorDto>(new GetDonorByAccountIdSpec(accountId), cancellationToken);
+            var accountId = _appContext.AccountId;
+            var donorDto = await _donorRepository.GetAs<DonorDto>(new GetDonorByAccountIdSpec(accountId), cancellationToken);
 
             if (donorDto is null)
                 return new Error.NotFound("Donor not found");

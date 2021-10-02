@@ -1,6 +1,5 @@
 ﻿using System;
 using BloodCore.Results;
-using BloodLoop.Domain.Donors;
 using LanguageExt;
 using MediatR;
 

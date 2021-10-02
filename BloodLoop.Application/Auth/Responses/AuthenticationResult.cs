@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BloodCore.AspNet;
+﻿using BloodCore.AspNet;
 
-namespace BloodLoop.Api.Responses
+namespace BloodLoop.Application.Auth.Responses
 {
     public class AuthenticationResult
     {

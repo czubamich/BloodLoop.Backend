@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Application.Services
 {
-    public interface ICurrentAccountAccessor
+    public interface IApplicationContext
     {
         AccountId AccountId { get; }
+        IEnumerable<Role> Roles { get; }
     }
 }

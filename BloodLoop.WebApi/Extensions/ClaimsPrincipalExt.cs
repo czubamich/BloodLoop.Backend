@@ -11,5 +11,8 @@ namespace BloodLoop.WebApi.Extensions
     {
         public static AccountId AccountId(this ClaimsPrincipal claimsPrincipal)
             => Domain.Accounts.AccountId.Of(claimsPrincipal.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+        public static IEnumerable<string> Roles(this ClaimsPrincipal claimsPrincipal)
+            => claimsPrincipal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(x => x.Value);
     }
 }

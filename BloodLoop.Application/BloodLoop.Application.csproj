@@ -5,12 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Accounts\Requests\" />
     <Folder Include="BloodBanks\Commands\" />
     <Folder Include="BloodBanks\Queries\" />
     <Folder Include="BloodBanks\Shared\" />
     <Folder Include="Donations\Queries\" />
-    <Folder Include="Shared\" />
-    <Folder Include="Tests\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BloodCore\BloodCore.csproj" />
-    <ProjectReference Include="..\BloodLoop.Api\BloodLoop.Api.csproj" />
     <ProjectReference Include="..\BloodLoop.Domain\BloodLoop.Domain.csproj" />
   </ItemGroup>
 

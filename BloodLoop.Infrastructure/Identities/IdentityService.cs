@@ -7,17 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BloodCore;
 using BloodCore.AspNet;
-using BloodLoop.Api.Responses;
+using BloodLoop.Application.Auth.Responses;
 using BloodLoop.Application.Services;
 using BloodLoop.Domain.Accounts;
 using BloodLoop.Infrastructure.Identities.Interfaces;
-using BloodLoop.Infrastructure.Persistance;
 using BloodLoop.Infrastructure.Settings;
-using LanguageExt;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

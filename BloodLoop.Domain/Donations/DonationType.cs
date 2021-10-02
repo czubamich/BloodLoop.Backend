@@ -1,11 +1,5 @@
-﻿using Ardalis.GuardClauses;
-using BloodCore.Domain;
-using BloodLoop.Domain.DonationHelpers;
-using System;
+﻿using BloodCore.Domain;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.Donations
 {
@@ -35,10 +29,10 @@ namespace BloodLoop.Domain.Donations
 
         #region Defaults
 
-        public static DonationType Whole        => new DonationType(nameof(Whole).ToLower(), "Whole Blood", 450);
-        public static DonationType Plasma       => new DonationType(nameof(Plasma).ToLower(), "Plasma", 600);
-        public static DonationType Platelets    => new DonationType(nameof(Platelets).ToLower(), "Platelets", 500);
-        public static DonationType RedCells     => new DonationType(nameof(RedCells).ToLower(), "Red Cells", 500);
+        public static DonationType Whole => new DonationType(nameof(Whole).ToLower(), "Whole Blood", 450);
+        public static DonationType Plasma => new DonationType(nameof(Plasma).ToLower(), "Plasma", 600);
+        public static DonationType Platelets => new DonationType(nameof(Platelets).ToLower(), "Platelets", 500);
+        public static DonationType RedCells => new DonationType(nameof(RedCells).ToLower(), "Red Cells", 500);
         public static DonationType Disqualified => new DonationType(nameof(Disqualified).ToLower(), "Disqualified", 0);
 
         public static DonationType[] GetDonationTypes()

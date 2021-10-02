@@ -28,12 +28,13 @@ namespace BloodLoop.Application.Donations.Commands
         public async Task<Either<Error, DonorDto>> Handle(RegisterDonorCommand request, CancellationToken cancellationToken)
         {
             var newDonor = _donorFactory.Create(
-                request.UserName, 
-                request.Email, 
-                request.FirstName, 
-                request.LastName,
-                request.Gender, 
-                request.BirthDay);
+                    request.UserName,
+                    request.Email,
+                    request.Gender,
+                    request.FirstName,
+                    request.LastName,
+                    request.BirthDay)
+                .SetPesel(new Pesel(request.Pesel));
 
             var identityResult = await _accountService.RegisterDonorAsync(newDonor, request.Password);
 
@@ -50,14 +51,14 @@ namespace BloodLoop.Application.Donations.Commands
 
         private void AddErrorsFromIdentityResult(Error.Validation validationError, IdentityResult identityResult)
         {
-            var errors = 
+            var errors =
                 identityResult.Errors.Select(x => new
                 {
-                    PropertyName = MapIdentityErrorToPropertyName(x), 
+                    PropertyName = MapIdentityErrorToPropertyName(x),
                     Error = x.Description
                 });
 
-            foreach(var error in errors)
+            foreach (var error in errors)
             {
                 validationError.AddError(error.PropertyName, error.Error);
             }

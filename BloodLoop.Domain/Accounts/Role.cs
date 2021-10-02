@@ -6,10 +6,19 @@ namespace BloodLoop.Domain.Accounts
     public class Role : IdentityRole<AccountId>
     {
         private Role() {}
-        private Role(string roleName, AccountId id) : base(roleName)
+
+        public Role(string roleName) : base(roleName) { }
+        private Role(string roleName, AccountId id) : this(roleName)
         {
             Id = id;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Role role && role.Name == Name;
+        }
+
+        #region Defaults
 
         public static Role Admin = new(nameof(Admin), AccountId.Of("fe967f00-e983-47af-9e36-13b388fc7911"));
         public static Role Staff = new(nameof(Staff), AccountId.Of("e9302cd4-0f08-4b9d-9677-932804efd1fa"));
@@ -24,5 +33,7 @@ namespace BloodLoop.Domain.Accounts
                 Donor,
             };
         }
+
+        #endregion
     }
 }

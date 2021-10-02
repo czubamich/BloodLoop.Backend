@@ -13,6 +13,8 @@ namespace BloodLoop.Application.Donations.Commands
         
         public string Email { get; set; }
 
+        public string Pesel { get; set; }
+
         public string Password { get; set; }
 
         public string FirstName { get; set; }

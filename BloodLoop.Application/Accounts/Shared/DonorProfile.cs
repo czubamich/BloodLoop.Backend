@@ -11,6 +11,12 @@ namespace BloodLoop.Application.Accounts.Shared
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id.Id))
                 .ForMember(dst => dst.FirstName, opt => opt.MapFrom(src => src.Account.FirstName))
                 .ForMember(dst => dst.LastName, opt => opt.MapFrom(src => src.Account.LastName));
+
+            CreateMap<Pesel, string>()
+                .ConstructUsing(src => src.Value);
+
+            CreateMap<string, Pesel>()
+                .ConstructUsing(src => new Pesel(src));
         }
     }
 }

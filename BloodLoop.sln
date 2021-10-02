@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.WebApi", "BloodLoop.WebApi\BloodLoop.WebApi.csproj", "{10013100-332D-43DA-B2E9-52253616A211}"
 EndProject
@@ -21,9 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Domain.Tests", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Infrastructure.Tests", "BloodLoop.Infrastructure.Tests\BloodLoop.Infrastructure.Tests.csproj", "{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodLoop.Api", "BloodLoop.Api\BloodLoop.Api.csproj", "{9FA53769-FE05-4830-8E00-386A5F2A3DA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodCore.Tests", "BloodCore.Tests\BloodCore.Tests.csproj", "{066C6066-F155-4F4B-ABA4-10FE1E792CCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BloodCore.Tests", "BloodCore.Tests\BloodCore.Tests.csproj", "{066C6066-F155-4F4B-ABA4-10FE1E792CCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,18 +129,6 @@ Global
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhone.Build.0 = Release|Any CPU
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{661907A2-BE0F-4A20-85E8-AE6C7198F1C3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhone.Build.0 = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{9FA53769-FE05-4830-8E00-386A5F2A3DA9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{066C6066-F155-4F4B-ABA4-10FE1E792CCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{066C6066-F155-4F4B-ABA4-10FE1E792CCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{066C6066-F155-4F4B-ABA4-10FE1E792CCA}.Debug|iPhone.ActiveCfg = Debug|Any CPU

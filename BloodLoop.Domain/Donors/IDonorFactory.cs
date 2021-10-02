@@ -7,7 +7,5 @@ namespace BloodLoop.Domain.Donors
     {
         Donor Create(string userName, string email, GenderType gender, string firstName, string lastName,
             DateTime birthDay);
-        Donor Create(string userName, string email, GenderType gender, string firstName, string lastName,
-            DateTime birthDay, Pesel pesel);
     }
 }

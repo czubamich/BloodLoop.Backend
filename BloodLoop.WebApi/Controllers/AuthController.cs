@@ -1,14 +1,10 @@
-﻿using System;
-using System.Security.Authentication;
+﻿using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using BloodCore.Api;
 using BloodCore.Common;
-using BloodCore.Results;
-using BloodLoop.Api.Requests;
-using BloodLoop.Api.Responses;
+using BloodLoop.Application.Auth.Requests;
+using BloodLoop.Application.Auth.Responses;
 using BloodLoop.Application.Services;
-using BloodLoop.Domain.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +72,7 @@ namespace BloodLoop.WebApi.Controllers
 
         [Authorize]
         [HttpPost("Revoke")]
-        public async Task<ActionResult> RevokeRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenRequest request, CancellationToken cancellationToken)
         {
             string refreshToken = request.RefreshToken ?? Request.Cookies[REFRESH_TOKEN_COOKIE_KEY];
 
