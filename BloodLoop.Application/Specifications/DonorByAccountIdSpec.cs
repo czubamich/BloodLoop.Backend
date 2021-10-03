@@ -12,11 +12,12 @@ using BloodLoop.Domain.Donors;
 
 namespace BloodLoop.Application.Specifications.Accounts
 {
-    sealed class GetDonorByAccountIdSpec : Specification<Donor>
+    sealed class DonorByAccountIdSpec : Specification<Donor>
     {
-        public GetDonorByAccountIdSpec(AccountId accountId)
+        public DonorByAccountIdSpec(AccountId accountId)
         {
-            Query.Where(x => x.AccountId == accountId);
+            Query
+                .Where(x => x.AccountId == accountId);
         }
     }
 }

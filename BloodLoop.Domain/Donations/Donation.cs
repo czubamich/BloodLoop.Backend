@@ -17,16 +17,17 @@ namespace BloodLoop.Domain.Donations
 
         public DonorId DonorId { get; private set; }
 
-        public DonationType DonationType { get; private set; }
+        public string DonationTypeLabel { get; private set; }
+        public virtual DonationType DonationType { get; private set; }
 
         #region Constructors
         
         private Donation() {}
 
-        private Donation(DonationId id, DonorId donorId, DonationType donationType, DateTime date) : base(id)
+        private Donation(DonationId id, DonorId donorId, string donationTypeLabel, DateTime date) : base(id)
         {
             DonorId = Guard.Against.Null(donorId, nameof(Id));
-            DonationType = Guard.Against.Null(donationType, nameof(Id));
+            DonationTypeLabel = Guard.Against.NullOrWhiteSpace(donationTypeLabel, nameof(DonationTypeLabel));
             Date = Guard.Against.OutOfSQLDateRange(date, nameof(Date));
         }
 
@@ -34,11 +35,11 @@ namespace BloodLoop.Domain.Donations
 
         #region Creations
 
-        public static Donation Create(DonationId id, DonorId donorId, DonationType donationType, DateTime date)
-            => new Donation(id, donorId, donationType, date);
+        public static Donation Create(DonationId id, DonorId donorId, string donationTypeLabel, DateTime date)
+            => new Donation(id, donorId, donationTypeLabel, date);
 
-        public static Donation Create(DonorId donorId, DonationType donationType, DateTime date)
-            => new Donation(DonationId.New, donorId, donationType, date);
+        public static Donation Create(DonorId donorId, string donationTypeLabel, DateTime date)
+            => new Donation(DonationId.New, donorId, donationTypeLabel, date);
 
         #endregion
 
@@ -60,7 +61,7 @@ namespace BloodLoop.Domain.Donations
 
         public Donation ChangeVolume(int volume)
         {
-            Volume = Guard.Against.NegativeOrZero(volume, nameof(Volume));
+            Volume = Guard.Against.Negative(volume, nameof(Volume));
 
             return this;
         }

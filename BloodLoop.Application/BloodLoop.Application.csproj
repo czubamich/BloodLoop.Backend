@@ -9,7 +9,8 @@
     <Folder Include="BloodBanks\Commands\" />
     <Folder Include="BloodBanks\Queries\" />
     <Folder Include="BloodBanks\Shared\" />
-    <Folder Include="Donations\Queries\" />
+    <Folder Include="Donations\Commands\AddDonations\" />
+    <Folder Include="Donations\Queries\GetDonations\" />
   </ItemGroup>
 
   <ItemGroup>

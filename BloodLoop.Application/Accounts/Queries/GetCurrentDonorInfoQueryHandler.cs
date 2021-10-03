@@ -13,21 +13,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BloodLoop.Application.Accounts.Queries
 {
-    class GetCurrentDonorInfoQueryHandler : IRequestHandler<GetCurrentDonorInfoQuery, Either<Error, DonorDto>>
+    class GetDonorInfoQueryHandler : IRequestHandler<GetDonorInfoQuery, Either<Error, DonorDto>>
     {
         private readonly IApplicationContext _appContext;
         private readonly IDonorRepository _donorRepository;
 
-        public GetCurrentDonorInfoQueryHandler(IDonorRepository donorRepository, IApplicationContext appContext)
+        public GetDonorInfoQueryHandler(IDonorRepository donorRepository, IApplicationContext appContext)
         {
             _donorRepository = donorRepository;
             _appContext = appContext;
         }
 
-        public async Task<Either<Error, DonorDto>> Handle(GetCurrentDonorInfoQuery request, CancellationToken cancellationToken)
+        public async Task<Either<Error, DonorDto>> Handle(GetDonorInfoQuery request, CancellationToken cancellationToken)
         {
             var accountId = _appContext.AccountId;
-            var donorDto = await _donorRepository.GetAs<DonorDto>(new GetDonorByAccountIdSpec(accountId), cancellationToken);
+            var donorDto = await _donorRepository.GetAs<DonorDto>(new DonorByAccountIdSpec(accountId), cancellationToken);
 
             if (donorDto is null)
                 return new Error.NotFound("Donor not found");

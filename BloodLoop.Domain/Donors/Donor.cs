@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace BloodLoop.Domain.Donors
 {
@@ -17,11 +18,8 @@ namespace BloodLoop.Domain.Donors
         public AccountId AccountId { get; private set; }
         public virtual Account Account { get; private set; }
 
-        [ProtectedPersonalData]
         public Pesel Pesel { get; private set; }
-        [ProtectedPersonalData]
         public GenderType Gender { get; private set; }
-        [ProtectedPersonalData]
         public DateTime BirthDay { get; private set; }
 
         public List<Donation> _donations;
@@ -100,6 +98,20 @@ namespace BloodLoop.Domain.Donors
 
             Account = account;
             AccountId = account.Id;
+
+            return this;
+        }
+
+        public Donor AddDonation(Donation donation)
+        {
+            var _donation = Donation.Create(this.Id, donation.DonationTypeLabel, donation.Date);
+
+            if (!string.IsNullOrWhiteSpace(donation.Location))
+                _donation.ChangeLocation(donation.Location);
+
+            _donation.ChangeVolume(donation.Volume > 0 ? donation.Volume : _donation.DonationType.DefaultVolume);
+
+            _donations.Add(_donation);
 
             return this;
         }

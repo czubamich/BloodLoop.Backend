@@ -5,8 +5,13 @@ using MediatR;
 
 namespace BloodLoop.Application.Accounts.Queries
 {
-    public class GetCurrentDonorInfoQuery : IRequest<Either<Error, DonorDto>>
+    public class GetDonorInfoQuery : IRequest<Either<Error, DonorDto>>
     {
         public Guid DonorId { get; set; }
+
+        public GetDonorInfoQuery(Guid donorId)
+        {
+            DonorId = donorId;
+        }
     }
 }

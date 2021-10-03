@@ -8,7 +8,6 @@ namespace BloodLoop.Application.Accounts
     {
         public Guid Id { get; set; }
 
-        public string Pesel { get; set; }
         public GenderType Gender { get; set; }
         
         public DateTime BirthDay { get; set; }
