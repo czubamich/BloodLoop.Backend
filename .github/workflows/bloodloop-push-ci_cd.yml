@@ -27,11 +27,11 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - name: 'Build'
-    - run: |
+      run: |
         docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.API_IMAGE_NAME}}:${{ github.sha }}
         
     - name: 'Push'
-    - run: |
+      run: |
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.API_IMAGE_NAME}}:${{ github.sha }}
     
     - name: 'Deploy'
