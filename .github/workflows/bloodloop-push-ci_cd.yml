@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: 'ubuntu-latest'
     env:
-        API_IMAGE_NAME: bloodloop-api
+        API_IMAGE_NAME: bloodloop
         AZURE_WEBAPP_API_NAME: bloodloop-api-dev
 
     steps:
@@ -40,4 +40,4 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_API_NAME }}
         slot-name: 'production'
         publish-profile: ${{ secrets.PUBLISH_PROFILE }}
-        images: ${{ env.AZURE_LOGIN_SERVER }}/${{env.API_IMAGE_NAME}}:${{ github.sha }}
+        images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{env.API_IMAGE_NAME}}:${{ github.sha }}
