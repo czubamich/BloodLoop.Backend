@@ -34,7 +34,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ env.API_IMAGE_NAME }}:latest
+        tags: ${{ secrets.AZURE_LOGIN_SERVER }}/${{ env.API_IMAGE_NAME }}:latest
     
     - name: 'Deploy'
       uses: azure/webapps-deploy@v2
