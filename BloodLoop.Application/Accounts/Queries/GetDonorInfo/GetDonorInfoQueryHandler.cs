@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BloodLoop.Application.Accounts.Queries
 {
-    class GetDonorInfoQueryHandler : IRequestHandler<GetDonorInfoQuery, Either<Error, DonorDto>>
+    public class GetDonorInfoQueryHandler : IRequestHandler<GetDonorInfoQuery, Either<Error, DonorDto>>
     {
         private readonly IApplicationContext _appContext;
         private readonly IDonorRepository _donorRepository;
