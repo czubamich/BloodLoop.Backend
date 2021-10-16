@@ -27,7 +27,7 @@ jobs:
         password: ${{ secrets.AzureAppService_ContainerPassword_66e7d6d16c3743af88af5ec3e7ad8e2a }}
         
     - name: Build and push container image to registry
-      uses: docker/build-push-action@v4.0
+      uses: docker/build-push-action@v2
       with:
         image: 'staticsite:latest'
         push: true
