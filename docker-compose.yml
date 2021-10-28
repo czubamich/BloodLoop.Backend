@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  bloodloop.webapi:
+    image: ${CONTAINER_REGISTRY}/${WEBAPI_IMAGE_NAME}:${MY_TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+        - "8000:80"
