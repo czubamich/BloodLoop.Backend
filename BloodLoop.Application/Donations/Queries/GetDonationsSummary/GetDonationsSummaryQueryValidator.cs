@@ -22,7 +22,7 @@ namespace BloodLoop.Application.Donations.Queries.GetDonationsSummary
     {
         public GetDonationsSummaryQueryValidator()
         {
-            RuleFor(x => x.DonationTypeLabel).NotEmpty().Must(x => DonationType.GetDonationTypes().Any(dt => x.Equals(dt.Label,StringComparison.InvariantCultureIgnoreCase)));
+            RuleFor(x => x.DonationTypeLabel).NotEmpty().Must(x => DonationType.GetDonationTypes().Any(dt => dt.Label.Equals(x,StringComparison.InvariantCultureIgnoreCase)));
         }
     }
 }
