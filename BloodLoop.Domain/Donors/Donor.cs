@@ -52,13 +52,13 @@ namespace BloodLoop.Domain.Donors
         #region Creations
 
         internal static Donor Create(DonorId id, Account account, GenderType gender, DateTime birthDay)
-            => new Donor(id, account, gender, birthDay);
+            => new(id, account, gender, birthDay);
 
         internal static Donor Create(Account account, GenderType gender, DateTime birthDay)
-            => new Donor(DonorId.New, account, gender, birthDay);
+            => new(DonorId.New, account, gender, birthDay);
 
         internal static Donor Create(AccountId accountId, GenderType gender, DateTime birthDay)
-            => new Donor(DonorId.New, accountId, gender, birthDay);
+            => new(DonorId.New, accountId, gender, birthDay);
 
         #endregion
 
@@ -111,6 +111,10 @@ namespace BloodLoop.Domain.Donors
 
             _donation.ChangeVolume(donation.Volume > 0 ? donation.Volume : _donation.DonationType.DefaultVolume);
 
+            var sameDayDonation = _donations.FirstOrDefault(x => x.Date.Date.Equals(donation.Date.Date));
+            if (sameDayDonation is not null)
+                _donations.Remove(sameDayDonation);
+               
             _donations.Add(_donation);
 
             return this;

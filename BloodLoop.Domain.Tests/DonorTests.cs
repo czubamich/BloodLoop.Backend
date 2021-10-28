@@ -14,7 +14,7 @@ namespace BloodLoop.Domain.Tests
     public class DonorTests
     {
         [Fact]
-        public void should_create_donor()
+        public void Should_create_donor()
         {
             //Arrange
             var accountId = AccountId.New;
@@ -34,7 +34,8 @@ namespace BloodLoop.Domain.Tests
             donor.Pesel.Should().Be(pesel);
         }
 
-        public void should_not_overwrite_pesel()
+        [Fact]
+        public void Should_not_overwrite_pesel()
         {
             //Arrange
             var pesel = new Pesel("04032514889");

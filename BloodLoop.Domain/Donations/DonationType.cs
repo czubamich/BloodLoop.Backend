@@ -29,11 +29,11 @@ namespace BloodLoop.Domain.Donations
 
         #region Defaults
 
-        public static DonationType Whole => new DonationType(nameof(Whole).ToLower(), "Whole Blood", 450);
-        public static DonationType Plasma => new DonationType(nameof(Plasma).ToLower(), "Plasma", 600);
-        public static DonationType Platelets => new DonationType(nameof(Platelets).ToLower(), "Platelets", 500);
-        public static DonationType RedCells => new DonationType(nameof(RedCells).ToLower(), "Red Cells", 500);
-        public static DonationType Disqualified => new DonationType(nameof(Disqualified).ToLower(), "Disqualified", 0);
+        public static DonationType Whole => new(nameof(Whole).ToLower(), "Whole Blood", 450);
+        public static DonationType Plasma => new(nameof(Plasma).ToLower(), "Plasma", 600);
+        public static DonationType Platelets => new(nameof(Platelets).ToLower(), "Platelets", 500);
+        public static DonationType RedCells => new(nameof(RedCells).ToLower(), "Red Cells", 500);
+        public static DonationType Disqualified => new(nameof(Disqualified).ToLower(), "Disqualified", 0);
 
         public static DonationType[] GetDonationTypes()
         {
