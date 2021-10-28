@@ -41,8 +41,8 @@ namespace BloodLoop.WebApi.Controllers
 
         [HttpGet("Donations")]
         [Authorize(Roles = nameof(Role.Donor))]
-        public async Task<ActionResult<IEnumerable<DonationDto>>> GetDonations(CancellationToken cancellationToken)
-            => (await _mediator.Send(new GetDonationsQuery(_applicationContext.AccountId), cancellationToken)).ToActionResult();
+        public async Task<ActionResult<IEnumerable<DonationGroupDto>>> GetDonations(CancellationToken cancellationToken)
+            => (await _mediator.Send(new GetDonationsByYearQuery(_applicationContext.AccountId), cancellationToken)).ToActionResult();
 
         [HttpGet("Summary")]
         [Authorize(Roles = nameof(Role.Donor))]

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using BloodLoop.Application.Donations.Shared;
 using BloodLoop.Domain.Donations;
-using BloodLoop.Domain.Donors;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Routing.Constraints;
+using System.Linq;
 
 namespace BloodLoop.Application.Donations
 {
@@ -15,6 +13,9 @@ namespace BloodLoop.Application.Donations
         {
             CreateMap<Donation, DonationDto>()
                 .ReverseMap();
+
+            CreateMap<IGrouping<string, Donation>, DonationGroupDto>()
+                .ConstructUsing((src, opt) => new DonationGroupDto() { Key = src.Key, Donations = opt.Mapper.Map<IEnumerable<DonationDto>>( src.AsEnumerable()) });
 
             CreateMap<DonationType, DonationTypeDto>()
                 .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.DefaultName));
