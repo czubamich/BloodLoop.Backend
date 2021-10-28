@@ -49,7 +49,7 @@ namespace BloodLoop.WebApi.Controllers
         public async Task<ActionResult<DonationSummaryDto>> GetDonationSummary([FromQuery] string donationType, CancellationToken cancellationToken)
             => (await _mediator.Send(new GetDonationsSummaryQuery(_applicationContext.AccountId, donationType), cancellationToken)).ToActionResult();
 
-        [HttpPost("Donations")]
+        [HttpPut("Donations")]
         [Authorize(Roles = nameof(Role.Donor))]
         public async Task<ActionResult<DonationDto[]>> AddDonation([FromBody] IEnumerable<DonationDto> donations,CancellationToken cancellationToken)
             => (await _mediator.Send(new AddDonationsCommand(_applicationContext.AccountId, donations.ToArray()), cancellationToken)).ToActionResult();
