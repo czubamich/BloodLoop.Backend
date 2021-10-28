@@ -13,17 +13,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using BloodCore.AspNet;
 using BloodCore.Cqrs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BloodLoop.Infrastructure.Persistance;
 using BloodCore.Persistance;
-using BloodLoop.Domain.Accounts;
 using BloodLoop.Infrastructure.Identities;
 using BloodLoop.Infrastructure.Settings;
 using FluentValidation.AspNetCore;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 namespace BloodLoop.WebApi
 {
@@ -33,7 +33,7 @@ namespace BloodLoop.WebApi
         {
             Configuration = configuration;
         }
-        
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -74,9 +74,23 @@ namespace BloodLoop.WebApi
             services.AddSecurity(Configuration);
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+            services.AddOpenApiDocument(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BloodLoop.WebApi", Version = "v1" });
+                options.DocumentName = "v1";
+                options.Title = "BloodLoop Api";
+                options.Version = "v1";
+
+                options.AddSecurity("JWT", Enumerable.Empty<string>(), new NSwag.OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.ApiKey,
+                    Name = "Authorization",
+                    In = OpenApiSecurityApiKeyLocation.Header,
+                    Description = "Type into the textbox: Bearer {your JWT token}."
+                });
+
+                options.OperationProcessors.Add(
+                    new AspNetCoreOperationSecurityScopeProcessor("JWT"));
             });
         }
 
@@ -96,16 +110,14 @@ namespace BloodLoop.WebApi
 
             sp.SeedRoles().Wait();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BloodLoop.WebApi v1"));
-            }
-            else
+            if (env.IsDevelopment() == false)
             {
                 app.UseHsts();
             }
+
+            app.UseOpenApi(options => options.PostProcess = (document, _) => document.Schemes = new[] { NSwag.OpenApiSchema.Https });
+
+            app.UseSwaggerUi3();
 
             app.UseSerilogRequestLogging();
 
