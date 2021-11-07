@@ -123,7 +123,10 @@ namespace BloodLoop.WebApi
 
             app.UseRouting();
 
-            app.UseCors();
+            app.UseCors(c =>
+            {
+                c.AllowAnyOrigin();
+            });
 
             app.UseHttpsRedirection();
 
