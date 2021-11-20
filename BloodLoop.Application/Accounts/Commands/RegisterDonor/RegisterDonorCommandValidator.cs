@@ -20,9 +20,6 @@ namespace BloodLoop.Application.Donations.Commands.RegisterDonor
                 .NotEmpty()
                 .EmailAddress(EmailValidationMode.Net4xRegex);
 
-            RuleFor(x => x.UserName)
-                .NotEmpty();
-
             RuleFor(x => x.FirstName)
                 .NotEmpty();
 
