@@ -70,7 +70,6 @@ namespace BloodLoop.Application.Donations.Commands
             {
                 case nameof(IdentityErrorDescriber.InvalidUserName):
                 case nameof(IdentityErrorDescriber.DuplicateUserName):
-                    return nameof(RegisterDonorCommand.UserName);
                 case nameof(IdentityErrorDescriber.InvalidEmail):
                 case nameof(IdentityErrorDescriber.DuplicateEmail):
                     return nameof(RegisterDonorCommand.Email);
