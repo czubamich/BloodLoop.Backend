@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using System.Linq;
 
 namespace BloodLoop.Infrastructure.Persistance.Configurations
 {
@@ -34,6 +35,10 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                 .Property(x => x.Gender)
                 .HasConversion<string>()
                 .IsRequired();
+
+            builder
+                .Property(x => x.BloodType)
+                .HasConversion(bt => bt.Label, str => BloodType.GetBloodTypes().FirstOrDefault(bt => bt.Label == str));
 
             builder
                 .Property(x => x.BirthDay)

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BloodLoop.Domain.Donations;
 using BloodLoop.Domain.Donors;
 using FluentValidation;
 using FluentValidation.Validators;
+
+#pragma warning disable CS0618 // Type or member is obsolete
 
 namespace BloodLoop.Application.Donations.Commands.RegisterDonor
 {
@@ -15,9 +18,7 @@ namespace BloodLoop.Application.Donations.Commands.RegisterDonor
         {
             RuleFor(x => x.Email)
                 .NotEmpty()
-#pragma warning disable CS0618 // Type or member is obsolete
                 .EmailAddress(EmailValidationMode.Net4xRegex);
-#pragma warning restore CS0618 // Type or member is obsolete
 
             RuleFor(x => x.UserName)
                 .NotEmpty();
@@ -28,14 +29,21 @@ namespace BloodLoop.Application.Donations.Commands.RegisterDonor
             RuleFor(x => x.LastName)
                 .NotEmpty();
 
-            RuleFor(x => x.Pesel)
-                .Must(x => (new Pesel(x).IsValid()));
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .Equal(x => x.ConfirmPassword);
 
             RuleFor(x => x.BirthDay)
+                .LessThanOrEqualTo(DateTime.UtcNow.AddYears(-17))
                 .GreaterThan(DateTime.UtcNow.AddYears(-100));
+
+            RuleFor(x => x.BloodTypeLabel)
+                .Must(btl => BloodType.GetBloodTypes().Any(bt => bt.Label == btl));
 
             RuleFor(x => x.Gender)
                 .IsInEnum();
         }
     }
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete

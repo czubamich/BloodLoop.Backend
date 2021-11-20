@@ -76,12 +76,12 @@ namespace BloodLoop.WebApi.Controllers
         {
             string refreshToken = request.RefreshToken ?? Request.Cookies[REFRESH_TOKEN_COOKIE_KEY];
 
-            if (string.IsNullOrWhiteSpace(request.RefreshToken))
+            if (string.IsNullOrWhiteSpace(refreshToken))
                 return BadRequest(ErrorResponse.FromMessage(StatusCodes.Status400BadRequest, "Revoke Token has failed", $"Missing required field: {nameof(request.RefreshToken)}"));
 
             try
             {
-                await _identityService.RevokeRefreshToken(request.RefreshToken, cancellationToken);
+                await _identityService.RevokeRefreshToken(refreshToken, cancellationToken);
             }
             catch (AuthenticationException e)
             {

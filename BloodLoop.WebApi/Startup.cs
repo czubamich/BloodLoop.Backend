@@ -24,6 +24,7 @@ using BloodLoop.Infrastructure.Settings;
 using FluentValidation.AspNetCore;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BloodLoop.WebApi
 {
@@ -86,12 +87,15 @@ namespace BloodLoop.WebApi
                     Type = OpenApiSecuritySchemeType.ApiKey,
                     Name = "Authorization",
                     In = OpenApiSecurityApiKeyLocation.Header,
-                    Description = "Type into the textbox: Bearer {your JWT token}."
+                    BearerFormat = "JWT",
+                    Description = "Type into the textbox: Bearer {your JWT token}.",
                 });
 
+
                 options.OperationProcessors.Add(
-                    new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                    new OperationSecurityScopeProcessor("JWT"));
             });
+
         }
 
         public IServiceCollection AddOptions(IServiceCollection services)
