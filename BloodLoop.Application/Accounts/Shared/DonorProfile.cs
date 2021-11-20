@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodLoop.Domain.Donations;
 using BloodLoop.Domain.Donors;
 
 namespace BloodLoop.Application.Accounts.Shared
@@ -17,6 +18,8 @@ namespace BloodLoop.Application.Accounts.Shared
 
             CreateMap<string, Pesel>()
                 .ConstructUsing(src => new Pesel(src));
+
+            CreateMap<BloodType, DonorDto.BloodTypeDto>();
         }
     }
 }

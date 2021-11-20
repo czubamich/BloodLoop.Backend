@@ -21,6 +21,7 @@ namespace BloodLoop.Domain.Donors
         public Pesel Pesel { get; private set; }
         public GenderType Gender { get; private set; }
         public DateTime BirthDay { get; private set; }
+        public virtual BloodType BloodType { get; private set; }
 
         public List<Donation> _donations;
         public virtual IReadOnlyCollection<Donation> Donations => _donations;
@@ -87,6 +88,14 @@ namespace BloodLoop.Domain.Donors
                 throw new DomainException("Provided pesel is invalid");
 
             Pesel = Guard.Against.Null(pesel, nameof(Pesel));
+
+            return this;
+        }
+
+        public Donor SetBloodType(BloodType bloodType)
+        {
+            if(BloodType != bloodType)
+                BloodType = Guard.Against.Null(bloodType, nameof(BloodType));
 
             return this;
         }

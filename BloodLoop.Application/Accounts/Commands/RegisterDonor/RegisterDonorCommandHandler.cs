@@ -5,6 +5,7 @@ using AutoMapper;
 using BloodCore.Results;
 using BloodLoop.Application.Accounts;
 using BloodLoop.Application.Services;
+using BloodLoop.Domain.Donations;
 using BloodLoop.Domain.Donors;
 using LanguageExt;
 using MediatR;
@@ -28,13 +29,12 @@ namespace BloodLoop.Application.Donations.Commands
         public async Task<Either<Error, DonorDto>> Handle(RegisterDonorCommand request, CancellationToken cancellationToken)
         {
             var newDonor = _donorFactory.Create(
-                    request.UserName,
                     request.Email,
-                    request.Gender,
                     request.FirstName,
                     request.LastName,
-                    request.BirthDay)
-                .SetPesel(new Pesel(request.Pesel));
+                    request.BirthDay,
+                    request.Gender,
+                    BloodType.GetBloodTypes().FirstOrDefault(x => x.Label == request.BloodTypeLabel));
 
             var identityResult = await _accountService.RegisterDonorAsync(newDonor, request.Password);
 
