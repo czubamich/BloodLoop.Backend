@@ -10,8 +10,8 @@ namespace BloodLoop.Domain.DonationHelpers
 {
     public class DonationConverter : Entity<DonationConverterId>
     {
-        public DonationType DonationFrom { get; private set; }
-        public DonationType DonationTo { get; private set; }
+        public virtual DonationType DonationFrom { get; private set; }
+        public virtual DonationType DonationTo { get; private set; }
         public double Ratio { get; private set; }
 
         #region Constructors
