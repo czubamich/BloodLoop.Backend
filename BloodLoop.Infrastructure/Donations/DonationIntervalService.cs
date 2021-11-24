@@ -3,6 +3,7 @@ using BloodCore.Persistance;
 using BloodLoop.Domain.Conversions;
 using BloodLoop.Domain.DonationHelpers;
 using BloodLoop.Domain.Donations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,14 @@ namespace BloodLoop.Infrastructure.Donations
             _context = context;
         }
 
-        public double Convert(DonationType fromType, DonationType toType)
+        public Task<TimeSpan> Convert(DonationType fromType, DonationType toType)
         {
-            _context.GetQueryable<DonationInterval>();
+            var interval = _context.GetQueryable<DonationInterval>()
+                .Where(x => x.DonationFrom.Label == fromType.Label && x.DonationTo.Label == toType.Label)
+                .Select(x => x.Interval)
+                .FirstOrDefaultAsync();
+
+            return interval;
         }
     }
 }
