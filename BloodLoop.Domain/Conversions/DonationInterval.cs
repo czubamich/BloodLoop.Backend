@@ -10,8 +10,8 @@ namespace BloodLoop.Domain.DonationHelpers
 {
     public class DonationInterval : Entity<DonationIntervalId>
     {
-        public DonationType DonationFrom { get; set; }
-        public DonationType DonationTo { get; set; }
+        public virtual DonationType DonationFrom { get; set; }
+        public virtual DonationType DonationTo { get; set; }
         public TimeSpan Interval { get; set; }
 
         #region Constructors
@@ -24,6 +24,5 @@ namespace BloodLoop.Domain.DonationHelpers
         }
 
         #endregion
-
     }
 }
