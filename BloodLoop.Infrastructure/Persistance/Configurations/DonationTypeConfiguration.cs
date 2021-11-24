@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BloodLoop.Infrastructure.Persistance.Configurations
 {
-    public class BloodTypeConfiguration : IEntityTypeConfiguration<DonationType>
+    public class DonationTypeConfiguration : IEntityTypeConfiguration<DonationType>
     {
         public void Configure(EntityTypeBuilder<DonationType> builder)
         {

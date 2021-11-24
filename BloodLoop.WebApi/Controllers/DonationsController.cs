@@ -18,6 +18,8 @@ using BloodLoop.Domain.Accounts;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using BloodLoop.Application.Donations.Queries.GetDonationInterval;
+using BloodLoop.Application.Donations.Queries.GetDonationConversion;
 
 namespace BloodLoop.WebApi.Controllers
 {
@@ -34,11 +36,11 @@ namespace BloodLoop.WebApi.Controllers
         }
 
         [HttpGet("Interval/{from}/{to}")]
-        public async Task<ActionResult<DonorDto>> GetDonationInterval([FromRoute] GetDonationIntervalQuery request, CancellationToken cancellationToken)
+        public async Task<ActionResult<TimeSpan>> GetDonationInterval([FromRoute] GetDonationIntervalQuery request, CancellationToken cancellationToken)
             => (await _mediator.Send(request, cancellationToken)).ToActionResult();
 
         [HttpGet("Conversion/{from}/{to}")]
-        public async Task<ActionResult<DonorDto>> GetDonationConversion([FromRoute] GetDonationConversionQuery request, CancellationToken cancellationToken)
+        public async Task<ActionResult<double>> GetDonationConversion([FromRoute] GetDonationConversionQuery request, CancellationToken cancellationToken)
             => (await _mediator.Send(request, cancellationToken)).ToActionResult();
     }
 }

@@ -9,6 +9,6 @@ namespace BloodLoop.Domain.Conversions
 {
     public interface IDonationIntervalService
     {
-        double Convert(DonationType fromType, DonationType toType);
+        Task<TimeSpan> Convert(DonationType fromType, DonationType toType);
     }
 }
