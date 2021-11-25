@@ -31,8 +31,8 @@ namespace BloodLoop.Application.Donations.Queries.GetDonationConversion
                 .Where(x => x.Label == request.FromType || x.Label == request.ToType)
                 .ToListAsync();
 
-            if (results.Count != 2)
-                return new Error.Invalid($"Invalid parameter values for {request.FromType} or {request.ToType}");
+            if (results.Count == 0 || (request.ToType == request.FromType && results.Count != 1))
+                return new Error.Invalid($"Invalid parameter values for {{{nameof(request.FromType)}}} or {{{nameof(request.ToType)}}}");
 
             return await _conversionService.Convert(
                 results.First(x => x.Label == request.FromType),
