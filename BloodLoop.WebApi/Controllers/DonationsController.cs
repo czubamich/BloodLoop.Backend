@@ -35,11 +35,11 @@ namespace BloodLoop.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("Interval/{from}/{to}")]
+        [HttpGet("Interval/{fromType}/{toType}")]
         public async Task<ActionResult<TimeSpan>> GetDonationInterval([FromRoute] GetDonationIntervalQuery request, CancellationToken cancellationToken)
             => (await _mediator.Send(request, cancellationToken)).ToActionResult();
 
-        [HttpGet("Conversion/{from}/{to}")]
+        [HttpGet("Conversion/{fromType}/{toType}")]
         public async Task<ActionResult<double>> GetDonationConversion([FromRoute] GetDonationConversionQuery request, CancellationToken cancellationToken)
             => (await _mediator.Send(request, cancellationToken)).ToActionResult();
     }
