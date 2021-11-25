@@ -123,10 +123,10 @@ namespace BloodLoop.Infrastructure.Migrations
             modelBuilder.Entity("BloodLoop.Domain.DonationHelpers.DonationConverter", b =>
                 {
                     b.Property<string>("DonationFromLabel")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("DonationToLabel")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<double>("Ratio")
                         .HasColumnType("float");
@@ -173,13 +173,13 @@ namespace BloodLoop.Infrastructure.Migrations
             modelBuilder.Entity("BloodLoop.Domain.DonationHelpers.DonationInterval", b =>
                 {
                     b.Property<string>("DonationFromLabel")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("DonationToLabel")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<TimeSpan>("Interval")
-                        .HasColumnType("time");
+                    b.Property<double>("Interval")
+                        .HasColumnType("float");
 
                     b.HasKey("DonationFromLabel", "DonationToLabel");
 
@@ -192,97 +192,97 @@ namespace BloodLoop.Infrastructure.Migrations
                         {
                             DonationFromLabel = "whole",
                             DonationToLabel = "whole",
-                            Interval = new TimeSpan(56, 0, 0, 0, 0)
+                            Interval = 56.0
                         },
                         new
                         {
                             DonationFromLabel = "whole",
                             DonationToLabel = "plasma",
-                            Interval = new TimeSpan(14, 0, 0, 0, 0)
+                            Interval = 14.0
                         },
                         new
                         {
                             DonationFromLabel = "whole",
                             DonationToLabel = "platelets",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "whole",
                             DonationToLabel = "redcells",
-                            Interval = new TimeSpan(56, 0, 0, 0, 0)
+                            Interval = 56.0
                         },
                         new
                         {
                             DonationFromLabel = "plasma",
                             DonationToLabel = "whole",
-                            Interval = new TimeSpan(14, 0, 0, 0, 0)
+                            Interval = 14.0
                         },
                         new
                         {
                             DonationFromLabel = "plasma",
                             DonationToLabel = "plasma",
-                            Interval = new TimeSpan(14, 0, 0, 0, 0)
+                            Interval = 14.0
                         },
                         new
                         {
                             DonationFromLabel = "plasma",
                             DonationToLabel = "platelets",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "plasma",
                             DonationToLabel = "redcells",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "platelets",
                             DonationToLabel = "whole",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "platelets",
                             DonationToLabel = "plasma",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "platelets",
                             DonationToLabel = "platelets",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "platelets",
                             DonationToLabel = "redcells",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "redcells",
                             DonationToLabel = "whole",
-                            Interval = new TimeSpan(56, 0, 0, 0, 0)
+                            Interval = 56.0
                         },
                         new
                         {
                             DonationFromLabel = "redcells",
                             DonationToLabel = "plasma",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "redcells",
                             DonationToLabel = "platelets",
-                            Interval = new TimeSpan(28, 0, 0, 0, 0)
+                            Interval = 28.0
                         },
                         new
                         {
                             DonationFromLabel = "redcells",
                             DonationToLabel = "redcells",
-                            Interval = new TimeSpan(56, 0, 0, 0, 0)
+                            Interval = 56.0
                         });
                 });
 
@@ -296,7 +296,7 @@ namespace BloodLoop.Infrastructure.Migrations
 
                     b.Property<string>("DonationTypeLabel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<Guid>("DonorId")
                         .HasColumnType("uniqueidentifier");
@@ -319,7 +319,8 @@ namespace BloodLoop.Infrastructure.Migrations
             modelBuilder.Entity("BloodLoop.Domain.Donations.DonationType", b =>
                 {
                     b.Property<string>("Label")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("DefaultName")
                         .HasColumnType("nvarchar(max)");
@@ -529,7 +530,7 @@ namespace BloodLoop.Infrastructure.Migrations
                     b.HasOne("BloodLoop.Domain.Donations.DonationType", "DonationTo")
                         .WithMany()
                         .HasForeignKey("DonationToLabel")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("DonationFrom");
@@ -548,7 +549,7 @@ namespace BloodLoop.Infrastructure.Migrations
                     b.HasOne("BloodLoop.Domain.Donations.DonationType", "DonationTo")
                         .WithMany()
                         .HasForeignKey("DonationToLabel")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("DonationFrom");

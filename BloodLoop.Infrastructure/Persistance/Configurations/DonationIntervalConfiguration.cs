@@ -17,19 +17,28 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                .ToTable($"{nameof(DonationInterval)}s");
 
             builder
-                .HasKey(x => new { x.DonationFromLabel, x.DonationToLabel});
-
-            builder
                 .HasOne(x => x.DonationFrom)
                 .WithMany()
                 .HasForeignKey(x => x.DonationFromLabel)
+                .OnDelete(DeleteBehavior.Cascade)
                 .IsRequired();
 
             builder
                 .HasOne(x => x.DonationTo)
                 .WithMany()
                 .HasForeignKey(x => x.DonationToLabel)
+                .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
+
+            builder
+                .HasKey(x => new { x.DonationFromLabel, x.DonationToLabel });
+
+            builder
+                .Property(x => x.Interval)
+                .HasConversion(
+                    x => x.TotalDays,
+                    x => TimeSpan.FromDays(x)
+                );
 
             builder
                 .HasData(SeedData());

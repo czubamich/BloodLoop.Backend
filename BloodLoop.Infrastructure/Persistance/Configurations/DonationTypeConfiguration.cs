@@ -15,6 +15,10 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                .ToTable($"{nameof(DonationType)}s");
 
             builder
+                .Property(x => x.Label)
+                .HasMaxLength(20);
+
+            builder
                 .HasKey(x => x.Label);
 
             builder
