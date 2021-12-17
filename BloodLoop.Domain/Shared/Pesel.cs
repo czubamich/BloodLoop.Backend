@@ -19,6 +19,24 @@ namespace BloodLoop.Domain.Donors
             yield return Value;
         }
 
+        public static Pesel Parse(string pesel) => new Pesel(pesel);
+
+        public static bool TryParse(string pesel, out Pesel result)
+        {
+            try
+            {
+                result = Parse(pesel);
+                return true;
+            }
+            catch(System.ArgumentException)
+            {
+                result = null;
+                return false;
+            }
+        }
+
+        public override string ToString() => Value;
+
         public bool IsValid()
         {
             if (Value.Length != 11)

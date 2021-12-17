@@ -13,7 +13,7 @@ using Unit = LanguageExt.Unit;
 
 namespace BloodLoop.Application.Donations.Commands.AddDonations
 {
-    public class AddDonationsCommandHandler : IRequestHandler<AddDonationsCommand, Either<Error, DonationDto[]>>
+    public class AddDonationsCommandHandler : IRequestHandler<AddDonationsByPeselCommand, Either<Error, DonationDto[]>>
     {
         private readonly IDonorRepository _donorRepository;
         private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ namespace BloodLoop.Application.Donations.Commands.AddDonations
             _mapper = mapper;
         }
 
-        public async Task<Either<Error, DonationDto[]>> Handle(AddDonationsCommand request, CancellationToken cancellationToken)
+        public async Task<Either<Error, DonationDto[]>> Handle(AddDonationsByPeselCommand request, CancellationToken cancellationToken)
         {
             var donor = await _donorRepository.Get(new DonorWithDonationsSpec(request.AccountId), cancellationToken);
 
