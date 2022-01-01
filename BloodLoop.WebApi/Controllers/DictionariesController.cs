@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using static BloodLoop.Application.Accounts.DonorDto;
 using BloodLoop.Domain.Donations;
 using AutoMapper;
+using BloodLoop.Application.Donations.Shared;
 
 namespace BloodLoop.WebApi.Controllers
 {
@@ -21,5 +22,9 @@ namespace BloodLoop.WebApi.Controllers
         [HttpGet("BloodTypes")]
         public ActionResult<BloodTypeDto[]> GetBloodTypes()
             => Ok(mapper.Map<BloodTypeDto[]>(BloodType.GetBloodTypes()));
+
+        [HttpGet("DonationTypes")]
+        public ActionResult<DonationTypeDto[]> GetDonationTypes()
+            => Ok(mapper.Map<DonationTypeDto[]>(DonationType.GetDonationTypes()));
     }
 }
