@@ -8,22 +8,40 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.DonationHelpers
 {
-    public class DonationInterval : Entity<DonationIntervalId>
+    public class DonationInterval : ValueObject
     {
-        public DonationType DonationFrom { get; set; }
-        public DonationType DonationTo { get; set; }
+        public string DonationFromLabel { get; set; }
+        public virtual DonationType DonationFrom { get; set; }
+        public string DonationToLabel { get; set; }
+        public virtual DonationType DonationTo { get; set; }
         public TimeSpan Interval { get; set; }
 
         #region Constructors
 
-        internal DonationInterval(DonationType donationFrom, DonationType donationTo, TimeSpan interval)
+        internal DonationInterval() { }
+
+        internal DonationInterval(string donationFromLabel, string donationToLabel, TimeSpan interval)
         {
-            DonationFrom = donationFrom;
-            DonationTo = donationTo;
+            DonationFromLabel = donationFromLabel;
+            DonationToLabel = donationToLabel;
             Interval = interval;
         }
 
-        #endregion
+        internal DonationInterval(DonationType donationFrom, DonationType donationTo, TimeSpan interval)
+        {
+            DonationFrom = donationFrom;
+            DonationFromLabel = donationFrom.Label;
+            DonationTo = donationTo;
+            DonationToLabel = donationTo.Label;
+            Interval = interval;
+        }
 
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return DonationFromLabel;
+            yield return DonationToLabel;
+        }
+
+        #endregion
     }
 }
