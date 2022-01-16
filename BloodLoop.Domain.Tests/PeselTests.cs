@@ -13,7 +13,7 @@ namespace BloodLoop.Domain.Tests
         [InlineData("17010714272")]
         [InlineData("19061479265")]
         [InlineData("07030248938")]
-        public void pesel_validation_succeed_when_is_valid(string peselString)
+        public void Pesel_validation_succeed_when_is_valid(string peselString)
         {
             //Arrange
             Pesel pesel = new Pesel(peselString);
@@ -31,7 +31,7 @@ namespace BloodLoop.Domain.Tests
         [InlineData("17010714273")]
         [InlineData("19061479264")]
         [InlineData("07030248935")]
-        public void pesel_validation_fails_when_is_invalid(string peselString)
+        public void Pesel_validation_fails_when_is_invalid(string peselString)
         {
             //Arrange
             Pesel pesel = new Pesel(peselString);
