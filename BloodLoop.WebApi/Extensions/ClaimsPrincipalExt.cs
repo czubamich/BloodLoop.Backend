@@ -15,7 +15,7 @@ namespace BloodLoop.WebApi.Extensions
 
         public static BloodBankId BloodBank(this ClaimsPrincipal claimsPrincipal)
         {
-            var bloodBankIdClaim = claimsPrincipal.Claims.Single(c => c.Type == nameof(BloodBankId))?.Value;
+            var bloodBankIdClaim = claimsPrincipal.Claims.SingleOrDefault(c => c.Type == nameof(BloodBankId))?.Value;
             return bloodBankIdClaim is not null ? Domain.BloodBanks.BloodBankId.Of(bloodBankIdClaim) : null;
         }
 
