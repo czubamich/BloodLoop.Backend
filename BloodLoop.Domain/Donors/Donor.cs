@@ -118,7 +118,9 @@ namespace BloodLoop.Domain.Donors
             if (!string.IsNullOrWhiteSpace(donation.Location))
                 _donation.ChangeLocation(donation.Location);
 
-            _donation.ChangeVolume(donation.Volume > 0 ? donation.Volume : _donation.DonationType.DefaultVolume);
+            _donation.ChangeVolume(donation.Volume > 0 ? donation.Volume 
+                : _donation.DonationType?.DefaultVolume 
+                ?? DonationType.GetDonationTypes().FirstOrDefault(x => x.Label == donation.DonationTypeLabel).DefaultVolume);
 
             var sameDayDonation = _donations.FirstOrDefault(x => x.Date.Date.Equals(donation.Date.Date));
             if (sameDayDonation is not null)

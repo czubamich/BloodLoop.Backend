@@ -3,6 +3,7 @@ using BloodCore.Results;
 using LanguageExt;
 using BloodLoop.Domain.BloodBanks;
 using BloodLoop.Application.Staff.Shared;
+using System;
 
 namespace BloodLoop.Application.Staff.Commands
 {
@@ -14,7 +15,7 @@ namespace BloodLoop.Application.Staff.Commands
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
 
-        public BloodBankId bloodBankId { get; set; }
+        public Guid bloodBankId { get; set; }
 
     }
 }

@@ -21,10 +21,11 @@ namespace BloodLoop.Application.Donations.Commands.AddDonations
         private readonly IMapper _mapper;
         private readonly IApplicationContext _applicationContext;
 
-        public AddDonationsByPeselCommandHandler(IDonorRepository donorRepository, IMapper mapper)
+        public AddDonationsByPeselCommandHandler(IDonorRepository donorRepository, IMapper mapper, IApplicationContext applicationContext)
         {
             _donorRepository = donorRepository;
             _mapper = mapper;
+            _applicationContext = applicationContext;
         }
 
         public async Task<Either<Error, Unit>> Handle(AddDonationsByPeselCommand request, CancellationToken cancellationToken)

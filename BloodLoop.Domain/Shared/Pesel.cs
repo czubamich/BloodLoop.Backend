@@ -26,7 +26,7 @@ namespace BloodLoop.Domain.Donors
             try
             {
                 result = Parse(pesel);
-                return true;
+                return result.IsValid();
             }
             catch(System.ArgumentException)
             {

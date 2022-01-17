@@ -17,6 +17,7 @@ namespace BloodLoop.Application.Specifications.Accounts
         public DonorByEmailSpec(string email)
         {
             Query
+                .Include(x => x.Account)
                 .Where(x => x.Account.Email == email);
         }
     }

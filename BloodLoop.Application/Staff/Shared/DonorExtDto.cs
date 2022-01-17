@@ -20,13 +20,5 @@ namespace BloodLoop.Application.Staff.Shared
         public DateTime BirthDay { get; set; }
 
         public GenderType Gender { get; set; }
-
-        public BloodTypeDto BloodType { get; set; }
-
-        public class BloodTypeDto
-        {
-            public string Label { get; set; }
-            public string Symbol { get; set; }
-        }
     }
 }

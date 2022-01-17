@@ -30,7 +30,10 @@ namespace BloodLoop.Application.Staff.Commands.VerifyDonor
             if(donor is null)
                 return new Error.NotFound($"User {request.Email} does not exist!");
 
-            donor.SetPesel(new Pesel(request.Pesel));
+            if (Pesel.TryParse(request.Pesel, out var pesel))
+                donor.SetPesel(pesel);
+            else
+                return new Error.Invalid($"Provided {{Pesel}} is invalid");
 
             return Unit.Value;
         }
