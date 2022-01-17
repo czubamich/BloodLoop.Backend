@@ -51,8 +51,8 @@ namespace BloodLoop.WebApi.Controllers
             => (await _mediator.Send(new GetDonationsSummaryQuery(_applicationContext.AccountId, donationType), cancellationToken)).ToActionResult();
 
         [HttpGet("Interval/{toType}")]
-        public async Task<ActionResult<TimeSpan>> GetUserDonationInterval([FromRoute] string donationTypeLabel, CancellationToken cancellationToken)
-            => (await _mediator.Send(new GetDonationIntervalForUserQuery(_applicationContext.AccountId, donationTypeLabel), cancellationToken)).ToActionResult();
+        public async Task<ActionResult<TimeSpan>> GetUserDonationInterval([FromRoute] string toType, CancellationToken cancellationToken)
+            => (await _mediator.Send(new GetDonationIntervalForUserQuery(_applicationContext.AccountId, toType), cancellationToken)).ToActionResult();
 
         [HttpPost("Donations")]
         [Authorize(Roles = nameof(Role.Donor))]
