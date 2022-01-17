@@ -41,11 +41,11 @@ namespace BloodLoop.WebApi.Controllers
             _applicationContext = applicationContext;
         }
 
-        [HttpPut("Staff")]
+        [HttpPost("Staff")]
         public async Task<ActionResult<MediatR.Unit>> RegisterStaff([FromBody] RegisterStaffCommand registerStaffCommand, CancellationToken cancellationToken)
             => (await _mediator.Send(registerStaffCommand, cancellationToken)).ToActionResult();
 
-        [HttpPut("BloodBanks")]
+        [HttpPost("BloodBanks")]
         public async Task<ActionResult<BloodBankDto>> RegisterBloodBank([FromBody] RegisterBloodBankCommand registerBloodBankCommand, CancellationToken cancellationToken)
             => (await _mediator.Send(registerBloodBankCommand, cancellationToken)).ToActionResult();
 

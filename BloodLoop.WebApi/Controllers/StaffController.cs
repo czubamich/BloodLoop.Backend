@@ -32,7 +32,7 @@ namespace BloodLoop.WebApi.Controllers
             _applicationContext = applicationContext;
         }
 
-        [HttpPut("Donations")]
+        [HttpPost("Donations")]
         public async Task<ActionResult<Unit>> AddDonations([FromBody] IEnumerable<DonationWithPeselDto> donations, CancellationToken cancellationToken)
             => (await _mediator.Send(new AddDonationsByPeselCommand(donations.ToArray()), cancellationToken)).ToActionResult();
 
