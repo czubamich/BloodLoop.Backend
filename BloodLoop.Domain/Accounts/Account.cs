@@ -11,7 +11,7 @@ namespace BloodLoop.Domain.Accounts
 {
     public class Account : IdentityUser<AccountId>, IAggregateRoot<AccountId>
     {
-        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new ConcurrentQueue<IDomainEvent>();
+        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new();
 
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
 

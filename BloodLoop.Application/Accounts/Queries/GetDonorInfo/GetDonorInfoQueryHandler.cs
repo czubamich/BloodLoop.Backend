@@ -6,6 +6,7 @@ using AutoMapper;
 using BloodCore.Results;
 using BloodLoop.Application.Services;
 using BloodLoop.Application.Specifications.Accounts;
+using BloodLoop.Domain.BloodBanks;
 using BloodLoop.Domain.Donors;
 using LanguageExt;
 using MediatR;

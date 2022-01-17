@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Accounts\Requests\" />
-    <Folder Include="BloodBanks\Commands\" />
-    <Folder Include="BloodBanks\Queries\" />
-    <Folder Include="BloodBanks\Shared\" />
+    <Compile Remove="Accounts\Requests\**" />
+    <EmbeddedResource Remove="Accounts\Requests\**" />
+    <None Remove="Accounts\Requests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Donations\Commands\AddDonations\" />
     <Folder Include="Donations\Queries\GetDonations\" />
   </ItemGroup>

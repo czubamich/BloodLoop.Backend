@@ -4,7 +4,7 @@ using BloodLoop.WebApi.Extensions;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
-using BloodLoop.Domain.Donors;
+using BloodLoop.Domain.BloodBanks;
 
 namespace BloodLoop.WebApi.Services
 {
@@ -18,6 +18,7 @@ namespace BloodLoop.WebApi.Services
         }
 
         public AccountId AccountId => _httpContextAccessor.HttpContext.User.AccountId();
+        public BloodBankId BloodBank => _httpContextAccessor.HttpContext.User.BloodBank();
         public IEnumerable<Role> Roles => _httpContextAccessor.HttpContext.User.Roles();
     }
 }

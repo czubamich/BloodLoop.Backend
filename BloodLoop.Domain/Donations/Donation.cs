@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using BloodCore.Domain;
+using BloodLoop.Domain.BloodBanks;
 using BloodLoop.Domain.Donors;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,13 @@ namespace BloodLoop.Domain.Donations
         public int Volume { get; private set; }
 
         public DonorId DonorId { get; private set; }
+        public BloodBankId SourceBankId { get; private set;}
 
         public string DonationTypeLabel { get; private set; }
         public virtual DonationType DonationType { get; private set; }
 
         #region Constructors
-        
+
         private Donation() {}
 
         private Donation(DonationId id, DonorId donorId, string donationTypeLabel, DateTime date) : base(id)
@@ -45,6 +47,12 @@ namespace BloodLoop.Domain.Donations
 
         #region Behaviours
 
+        public Donation ChangeBloodBank(BloodBankId bloodBankId)
+        {
+            SourceBankId = bloodBankId;
+
+            return this;
+        }
         public Donation ChangeDate(DateTime date)
         {
             Date = Guard.Against.OutOfSQLDateRange(date, nameof(Date));

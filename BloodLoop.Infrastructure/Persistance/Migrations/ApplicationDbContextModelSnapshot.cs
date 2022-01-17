@@ -120,6 +120,23 @@ namespace BloodLoop.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("BloodLoop.Domain.BloodBanks.BloodBank", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BloodBanks");
+                });
+
             modelBuilder.Entity("BloodLoop.Domain.DonationHelpers.DonationConverter", b =>
                 {
                     b.Property<string>("DonationFromLabel")
@@ -304,6 +321,9 @@ namespace BloodLoop.Infrastructure.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("SourceBankId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Volume")
                         .HasColumnType("int");
 
@@ -312,6 +332,8 @@ namespace BloodLoop.Infrastructure.Migrations
                     b.HasIndex("DonationTypeLabel");
 
                     b.HasIndex("DonorId");
+
+                    b.HasIndex("SourceBankId");
 
                     b.ToTable("Donations");
                 });
@@ -394,6 +416,28 @@ namespace BloodLoop.Infrastructure.Migrations
                         .HasFilter("[AccountId] IS NOT NULL");
 
                     b.ToTable("Donors");
+                });
+
+            modelBuilder.Entity("BloodLoop.Domain.Staff.Staff", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("BloodBankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId")
+                        .IsUnique()
+                        .HasFilter("[AccountId] IS NOT NULL");
+
+                    b.HasIndex("BloodBankId");
+
+                    b.ToTable("Staffs");
                 });
 
             modelBuilder.Entity("BloodLoop.Infrastructure.Identities.RefreshToken", b =>
@@ -571,6 +615,10 @@ namespace BloodLoop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BloodLoop.Domain.BloodBanks.BloodBank", null)
+                        .WithMany()
+                        .HasForeignKey("SourceBankId");
+
                     b.Navigation("DonationType");
                 });
 
@@ -581,6 +629,21 @@ namespace BloodLoop.Infrastructure.Migrations
                         .HasForeignKey("BloodLoop.Domain.Donors.Donor", "AccountId");
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("BloodLoop.Domain.Staff.Staff", b =>
+                {
+                    b.HasOne("BloodLoop.Domain.Accounts.Account", "Account")
+                        .WithOne()
+                        .HasForeignKey("BloodLoop.Domain.Staff.Staff", "AccountId");
+
+                    b.HasOne("BloodLoop.Domain.BloodBanks.BloodBank", "BloodBank")
+                        .WithMany()
+                        .HasForeignKey("BloodBankId");
+
+                    b.Navigation("Account");
+
+                    b.Navigation("BloodBank");
                 });
 
             modelBuilder.Entity("BloodLoop.Infrastructure.Identities.RefreshToken", b =>

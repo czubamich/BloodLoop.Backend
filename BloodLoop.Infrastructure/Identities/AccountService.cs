@@ -1,8 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using BloodCore;
 using BloodLoop.Application.Services;
 using BloodLoop.Domain.Accounts;
+using BloodLoop.Domain.BloodBanks;
 using BloodLoop.Domain.Donors;
+using BloodLoop.Domain.Staff;
 using BloodLoop.Infrastructure.Persistance;
 using BloodLoop.Infrastructure.Settings;
 using FluentValidation;
@@ -17,15 +21,18 @@ namespace BloodLoop.Infrastructure.Identities
     {
         private readonly UserManager<Account> _userManager;
         private readonly IDonorRepository _donorRepository;
+        private readonly IStaffRepository _staffRepository;
         private readonly IMediator _mediator;
 
         public AccountService(UserManager<Account> userManager,
             RoleManager<Role> roleManager,
             IDonorRepository donorRepository,
+            IStaffRepository staffRepository,
             IMediator mediator)
         {
             _userManager = userManager;
             _donorRepository = donorRepository;
+            _staffRepository = staffRepository;
             _mediator = mediator;
         }
 
@@ -38,6 +45,22 @@ namespace BloodLoop.Infrastructure.Identities
                 await _userManager.AddToRoleAsync(donor.Account, Role.Donor.ToString());
 
                 await _donorRepository.AddAsync(donor);
+            }
+
+            //TODO: Publish domain event
+            return result;
+        }
+
+        public async Task<IdentityResult> RegisterStaffAsync(Staff staff, string password)
+        {
+            var result = await _userManager.CreateAsync(staff.Account, password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(staff.Account, Role.Staff.ToString());
+                await _userManager.AddClaimAsync(staff.Account, new Claim(nameof(BloodBankId), staff.BloodBankId.Id.ToString()));
+
+                await _staffRepository.AddAsync(staff);
             }
 
             //TODO: Publish domain event

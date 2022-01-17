@@ -50,16 +50,18 @@ namespace BloodCore.Results
 
         public sealed class Validation : Error
         {
-            private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
+            private Dictionary<string, List<string>> _errors = new();
 
             public IDictionary<string, string[]> Errors => _errors.ToDictionary(k => k.Key, v => v.Value.ToArray());
 
-            public void AddError(string propertyName, string message)
+            public Validation AddError(string propertyName, string message)
             {
                 if (_errors.ContainsKey(propertyName))
                     _errors[propertyName].Add(message);
                 else
                     _errors.Add(propertyName, new List<string> { message });
+
+                return this;
             }
 
             public override TResult Accept<TVisitor, TResult>(TVisitor visitor)
