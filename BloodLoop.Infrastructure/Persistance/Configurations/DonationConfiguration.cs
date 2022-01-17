@@ -1,5 +1,6 @@
 ﻿using BloodLoop.Domain;
 using BloodLoop.Domain.Accounts;
+using BloodLoop.Domain.BloodBanks;
 using BloodLoop.Domain.Donations;
 using BloodLoop.Domain.Donors;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,11 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                 .WithMany(x => x.Donations)
                 .HasForeignKey(x => x.DonorId)
                 .IsRequired();
+
+            builder
+                .HasOne<BloodBank>()
+                .WithMany()
+                .HasForeignKey(x => x.SourceBankId);
         }
     }
 }
