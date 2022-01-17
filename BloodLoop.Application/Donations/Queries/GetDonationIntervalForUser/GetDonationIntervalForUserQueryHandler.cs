@@ -2,6 +2,7 @@
 using BloodCore.Results;
 using BloodLoop.Domain.Conversions;
 using BloodLoop.Domain.Donations;
+using BloodLoop.Domain.Donors;
 using LanguageExt;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +28,9 @@ namespace BloodLoop.Application.Donations.Queries.GetDonationInterval
         public async Task<Either<Error, TimeSpan>> Handle(GetDonationIntervalForUserQuery request, CancellationToken cancellationToken)
         {
             var latestDonation = await _context.GetQueryable<Donation>()
-                .Where(x => x.DonorId.Id == request.AccountId.Id)
                 .OrderByDescending(x => x.Date)
+                .Where(x => x.DonorId == DonorId.Of(request.AccountId.Id))
+                .Take(1)
                 .FirstOrDefaultAsync();
 
             if (latestDonation is null)
@@ -48,7 +50,7 @@ namespace BloodLoop.Application.Donations.Queries.GetDonationInterval
 
             var nextDonationDate = (latestDonation.Date + requiredInterval);
 
-            return nextDonationDate > DateTime.UtcNow ? DateTime.UtcNow - nextDonationDate : TimeSpan.Zero;
+            return nextDonationDate > DateTime.UtcNow ? nextDonationDate - DateTime.UtcNow : TimeSpan.Zero;
         }
     }
 }
