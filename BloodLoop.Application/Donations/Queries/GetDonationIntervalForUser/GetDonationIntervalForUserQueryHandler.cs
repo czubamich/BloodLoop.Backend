@@ -50,7 +50,7 @@ namespace BloodLoop.Application.Donations.Queries.GetDonationInterval
 
             var nextDonationDate = (latestDonation.Date + requiredInterval);
 
-            return nextDonationDate > DateTime.UtcNow ? DateTime.UtcNow - nextDonationDate : TimeSpan.Zero;
+            return nextDonationDate > DateTime.UtcNow ? nextDonationDate - DateTime.UtcNow : TimeSpan.Zero;
         }
     }
 }
