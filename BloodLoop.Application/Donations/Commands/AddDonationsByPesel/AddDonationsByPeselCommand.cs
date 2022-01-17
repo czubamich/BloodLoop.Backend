@@ -1,11 +1,10 @@
 ﻿using BloodCore.Cqrs;
 using BloodCore.Results;
-using BloodLoop.Domain.Accounts;
 using LanguageExt;
 
 namespace BloodLoop.Application.Donations.Commands.AddDonations
 {
-    public class AddDonationsByPeselCommand : ICommand<Either<Error, AddDonationsByPeselResponse>>
+    public class AddDonationsByPeselCommand : ICommand<Either<Error, MediatR.Unit>>
     {
         public DonationWithPeselDto[] NewDonations { get; set; }
 

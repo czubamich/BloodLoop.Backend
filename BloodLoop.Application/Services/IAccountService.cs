@@ -8,7 +8,7 @@ namespace BloodLoop.Application.Services
     public interface IAccountService
     {
         Task<IdentityResult> RegisterDonorAsync(Donor donor, string password);
-        //Task<Staff> RegisterStaffAsync(Staff staff, string password);
+        Task<IdentityResult> RegisterStaffAsync(Domain.Staff.Staff staff, string password);
 
         Task<string> SendVerificationEmail(Account account);
         Task<IdentityResult> ConfirmEmailAsync(Account account, string code);

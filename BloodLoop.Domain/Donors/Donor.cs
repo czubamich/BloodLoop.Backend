@@ -13,7 +13,7 @@ using Microsoft.VisualBasic.CompilerServices;
 
 namespace BloodLoop.Domain.Donors
 {
-    public class Donor : AggregateRoot<DonorId>
+    public class Donor : AggregateRoot<DonorId>, IAccount
     {
         public AccountId AccountId { get; private set; }
         public virtual Account Account { get; private set; }
@@ -125,6 +125,16 @@ namespace BloodLoop.Domain.Donors
                 _donations.Remove(sameDayDonation);
                
             _donations.Add(_donation);
+
+            return this;
+        }
+
+        public Donor RemoveDonation(DateTime date)
+        {
+            var donationToDelete = _donations.FirstOrDefault(x => x.Date == date);
+
+            if (donationToDelete is not null)
+                _donations.Remove(donationToDelete);
 
             return this;
         }

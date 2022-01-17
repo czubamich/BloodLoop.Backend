@@ -19,6 +19,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using BloodLoop.Application.Auth;
+using BloodLoop.Application.BloodBanks.Shared;
+using BloodLoop.Application.BloodBanks.Commands;
+using BloodLoop.Application.BloodBanks.Queries;
+using BloodLoop.Application.Staff.Shared;
+using BloodLoop.Application.Staff.Commands;
 
 namespace BloodLoop.WebApi.Controllers
 {
@@ -37,8 +42,15 @@ namespace BloodLoop.WebApi.Controllers
         }
 
         [HttpPut("Staff")]
-        
-        public async Task<ActionResult<DonationDto[]>> CreateStaff([FromBody] IEnumerable<StaffInfoDto> donations, CancellationToken cancellationToken)
-            => (await _mediator.Send(new AddNewS(_applicationContext.AccountId, donations.ToArray()), cancellationToken)).ToActionResult();
+        public async Task<ActionResult<MediatR.Unit>> RegisterStaff([FromBody] RegisterStaffCommand registerStaffCommand, CancellationToken cancellationToken)
+            => (await _mediator.Send(registerStaffCommand, cancellationToken)).ToActionResult();
+
+        [HttpPut("BloodBanks")]
+        public async Task<ActionResult<BloodBankDto>> RegisterBloodBank([FromBody] RegisterBloodBankCommand registerBloodBankCommand, CancellationToken cancellationToken)
+            => (await _mediator.Send(registerBloodBankCommand, cancellationToken)).ToActionResult();
+
+        [HttpGet("BloodBanks")]
+        public async Task<ActionResult<BloodBankDto[]>> GetBloodBank(CancellationToken cancellationToken)
+            => (await _mediator.Send(new GetBloodBanksQuery(), cancellationToken)).ToActionResult();
     }
 }
