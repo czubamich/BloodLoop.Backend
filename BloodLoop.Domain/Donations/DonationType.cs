@@ -20,6 +20,11 @@ namespace BloodLoop.Domain.Donations
             DefaultVolume = defaultVolume;
         }
 
+        public static DonationType Of(string label)
+        {
+            return new DonationType(label, "", 0);
+        }
+
         #endregion
 
         protected override IEnumerable<object> GetEqualityComponents()

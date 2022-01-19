@@ -42,7 +42,7 @@ namespace BloodLoop.WebApi.Controllers
         }
 
         [HttpPost("Staff")]
-        public async Task<ActionResult<MediatR.Unit>> RegisterStaff([FromBody] RegisterStaffCommand registerStaffCommand, CancellationToken cancellationToken)
+        public async Task<ActionResult<Unit>> RegisterStaff([FromBody] RegisterStaffCommand registerStaffCommand, CancellationToken cancellationToken)
             => (await _mediator.Send(registerStaffCommand, cancellationToken)).ToActionResult();
 
         [HttpPost("BloodBanks")]

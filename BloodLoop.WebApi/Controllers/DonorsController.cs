@@ -50,6 +50,11 @@ namespace BloodLoop.WebApi.Controllers
         public async Task<ActionResult<DonationSummaryDto>> GetDonationSummary([FromQuery] string donationType, CancellationToken cancellationToken)
             => (await _mediator.Send(new GetDonationsSummaryQuery(_applicationContext.AccountId, donationType), cancellationToken)).ToActionResult();
 
+        [HttpGet("Summary/Total")]
+        [Authorize(Roles = nameof(Role.Donor))]
+        public async Task<ActionResult<DonationSummaryDto>> GetTotalDonationSummary(CancellationToken cancellationToken)
+            => (await _mediator.Send(new GetTotalWholeBloodSummaryQuery(_applicationContext.AccountId), cancellationToken)).ToActionResult();
+
         [HttpGet("Interval/{toType}")]
         [Authorize(Roles = nameof(Role.Donor))]
         public async Task<ActionResult<TimeSpan>> GetUserDonationInterval([FromRoute] string toType, CancellationToken cancellationToken)
