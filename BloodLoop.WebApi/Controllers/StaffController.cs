@@ -20,6 +20,7 @@ namespace BloodLoop.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = nameof(Role.Staff))]
     public class StaffController : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -50,6 +50,9 @@ namespace BloodLoop.WebApi.Controllers
         {
             string refreshToken = request.RefreshToken ?? Request.Cookies[REFRESH_TOKEN_COOKIE_KEY];
 
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                return AuthenticationResult.Failed("Invalid refresh token");
+
             AuthenticationResult result =
                 await _identityService.RefreshToken(refreshToken, cancellationToken);
 
