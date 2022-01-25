@@ -29,7 +29,7 @@ namespace BloodLoop.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(nameof(Role.Admin))]
+    [Authorize(Roles = nameof(Role.Admin))]
     public class AdminController : ControllerBase
     {
         private readonly IMediator _mediator;
