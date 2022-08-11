@@ -27,6 +27,7 @@ using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hangfire;
 using Hangfire.SqlServer;
+using BloodLoop.Infrastructure.Workers;
 
 namespace BloodLoop.WebApi
 {
@@ -68,6 +69,8 @@ namespace BloodLoop.WebApi
             services.AddHttpContextAccessor();
             services.AddSingleton<IApplicationContext, ApplicationContext>();
 
+            services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
+
             services.AddHangfire(configuration => configuration
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
@@ -89,8 +92,6 @@ namespace BloodLoop.WebApi
             );
 
             services.AddBloodLoopAuthentication(Configuration);
-
-            services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
 
             services.AddSecurity(Configuration);
 
@@ -132,7 +133,9 @@ namespace BloodLoop.WebApi
         {
             dbContext.Database.Migrate();
 
-            sp.SeedRoles().Wait();
+            sp.SetupRecurringJobs(Configuration);
+
+            sp.SeedRoles().ConfigureAwait(false);
 
             if (env.IsDevelopment() == false)
             {

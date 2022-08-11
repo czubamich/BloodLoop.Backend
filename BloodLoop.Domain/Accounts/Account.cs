@@ -35,6 +35,8 @@ namespace BloodLoop.Domain.Accounts
             UserName = userName;
             Email = email;
             CreatedDate = createdAt;
+
+            Publish(new AccountCreatedEvent(Id));
         }
 
         #endregion
