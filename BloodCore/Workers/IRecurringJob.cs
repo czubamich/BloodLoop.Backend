@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BloodCore.Workers
 {
-    public interface IRecurringJobScheduler
+    public interface IRecurringJob
     {
-        public Task Configure(IJobScheduler jobScheduler);
+        string Name { get;}
+        void Configure(IJobScheduler scheduler, RecurringJobDefinition settings);
     }
 }

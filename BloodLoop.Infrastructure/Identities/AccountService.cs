@@ -96,5 +96,10 @@ namespace BloodLoop.Infrastructure.Identities
             
             return await _userManager.ResetPasswordAsync(account, token, password);
         }
+
+        public Task<Account> GetAccountInfo(AccountId accountId)
+        {
+            return _userManager.FindByIdAsync(accountId.Id.ToString());
+        }
     }
 }

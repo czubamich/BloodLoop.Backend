@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using BloodCore.Workers;
+using Microsoft.Extensions.Configuration;
 
 namespace BloodCore.AspNet
 {
