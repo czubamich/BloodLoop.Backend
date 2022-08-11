@@ -25,6 +25,8 @@ using FluentValidation.AspNetCore;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace BloodLoop.WebApi
 {
@@ -66,7 +68,25 @@ namespace BloodLoop.WebApi
             services.AddHttpContextAccessor();
             services.AddSingleton<IApplicationContext, ApplicationContext>();
 
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeResolver()
+                .UseSqlServerStorage(Configuration.GetConnectionString("Hangfire"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+            services.AddHangfireServer();
+
             services.AddCqrs();
+
+            services.AddLogging(config => 
+                config.AddSerilog()
+            );
 
             services.AddBloodLoopAuthentication(Configuration);
 
@@ -123,7 +143,9 @@ namespace BloodLoop.WebApi
 
             app.UseSwaggerUi3();
 
-            app.UseSerilogRequestLogging();
+            app.UseHangfireDashboard();
+
+            app.UseMiddleware<SerilogMiddleware>();
 
             app.UseRouting();
 
