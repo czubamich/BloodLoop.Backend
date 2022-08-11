@@ -67,19 +67,19 @@ namespace BloodLoop.Infrastructure.Identities
             return result;
         }
 
-        public async Task<string> SendVerificationEmail(Account account)
+        public async Task<string> GetEmailVerificationToken(Account account)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(account);
         }
 
-        public async Task<IdentityResult> ConfirmEmailAsync(Account account, string code)
+        public async Task<IdentityResult> ConfirmEmailAsync(Account account, string token)
         {
             var user = await _userManager.FindByIdAsync(account.Id.ToString());
             
-            return await _userManager.ConfirmEmailAsync(user, code);
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
 
-        public async Task<string> ForgotPassword(string email)
+        public async Task<string> GetForgotPasswordToken(string email)
         {
             var account = await _userManager.FindByEmailAsync(email);
 
