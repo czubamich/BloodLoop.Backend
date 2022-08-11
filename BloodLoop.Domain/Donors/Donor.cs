@@ -111,7 +111,7 @@ namespace BloodLoop.Domain.Donors
             return this;
         }
 
-        public Donor AddDonation(Donation donation)
+        public Donor AddDonation(Donation donation, out bool isNew)
         {
             var _donation = Donation.Create(this.Id, donation.DonationTypeLabel, donation.Date);
 
@@ -123,9 +123,12 @@ namespace BloodLoop.Domain.Donors
                 ?? DonationType.GetDonationTypes().FirstOrDefault(x => x.Label == donation.DonationTypeLabel).DefaultVolume);
 
             var sameDayDonation = _donations.FirstOrDefault(x => x.Date.Date.Equals(donation.Date.Date));
-            if (sameDayDonation is not null)
+            
+            isNew = sameDayDonation is null;
+            
+            if (!isNew)
                 _donations.Remove(sameDayDonation);
-               
+                        
             _donations.Add(_donation);
 
             return this;

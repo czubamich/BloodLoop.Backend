@@ -10,9 +10,9 @@ namespace BloodLoop.Application.Services
         Task<IdentityResult> RegisterDonorAsync(Donor donor, string password);
         Task<IdentityResult> RegisterStaffAsync(Domain.Staff.Staff staff, string password);
 
-        Task<string> SendVerificationEmail(Account account);
-        Task<IdentityResult> ConfirmEmailAsync(Account account, string code);
-        Task<string> ForgotPassword(string email);
+        Task<string> GetEmailVerificationToken(Account account);
+        Task<IdentityResult> ConfirmEmailAsync(Account account, string token);
+        Task<string> GetForgotPasswordToken(string email);
         Task<IdentityResult> ResetPassword(Account account, string token, string password);
     }
 }
