@@ -32,20 +32,14 @@ namespace BloodLoop.Domain.Donors
         {
         }
 
-        public Donor(DonorId id, AccountId accountId, GenderType gender, DateTime birthDay)
-        {
-            Id = Guard.Against.NullOrDefault(id, nameof(Id));
-            AccountId = Guard.Against.NullOrDefault(accountId, nameof(AccountId));
-            ChangeGender(gender);
-            ChangeBirthDay(birthDay);
-        }
-
         public Donor(DonorId id, Account account, GenderType gender, DateTime birthDay)
         {
             Id = Guard.Against.NullOrDefault(id, nameof(Id));
             SetAccount(account);
             ChangeGender(gender);
             ChangeBirthDay(birthDay);
+
+            Publish(new AccountCreatedEvent(AccountId));
         }
 
         #endregion
@@ -57,9 +51,6 @@ namespace BloodLoop.Domain.Donors
 
         internal static Donor Create(Account account, GenderType gender, DateTime birthDay)
             => new(DonorId.New, account, gender, birthDay);
-
-        internal static Donor Create(AccountId accountId, GenderType gender, DateTime birthDay)
-            => new(DonorId.New, accountId, gender, birthDay);
 
         #endregion
 

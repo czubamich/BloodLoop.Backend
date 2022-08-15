@@ -9,21 +9,25 @@ namespace BloodLoop.Application.Emails
 {
     public abstract class BaseEmailTemplate : EmailTemplate
     {
-        private readonly string _userName;
+        public string UserName { get; set; }
 
         protected BaseEmailTemplate(string userName)
         {
-            _userName = userName;
+            UserName = userName;
         }
 
         public override sealed string Print()
         {
             return
-$@"[Nicely formatted document]
-Cześć {_userName}!
-
-{GetContent()}
-[Nicely formatted]";
+$@"
+<!DOCTYPE html>
+<html lang=""pl"">
+<body>
+Cześć {UserName}!</br>
+</br>
+{GetContent().Replace("\n", "\n</br>")}
+</body>
+</html>";
         }
 
         public abstract string GetContent();

@@ -13,21 +13,24 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Application.Accounts.Events
 {
-    internal class SendVerificationEmailOnAccountCreatedHandler : IDomainEventHandler<AccountCreatedEvent>
+    public class SendVerificationEmailOnAccountCreatedHandler : IDomainEventHandler<AccountCreatedEvent>
     {
         private readonly IAccountService _accountService;
         private readonly IJobScheduler _jobScheduler;
+        private readonly IUrlService _urlService;
 
-        public SendVerificationEmailOnAccountCreatedHandler(IAccountService accountService, IJobScheduler jobScheduler)
+        public SendVerificationEmailOnAccountCreatedHandler(IAccountService accountService, IJobScheduler jobScheduler, IUrlService urlService)
         {
             _accountService = accountService;
             _jobScheduler = jobScheduler;
+            _urlService = urlService;
         }
 
         public async Task Handle(AccountCreatedEvent notification, CancellationToken cancellationToken)
         {
             var account = await _accountService.GetAccountInfo(notification.AccountId);
             var confirmationToken = await _accountService.GetEmailVerificationToken(account);
+            var confirmationUrl = _urlService.CreateWebUrl($"account/confirm/?accountId={account.Id}&confirmToken={confirmationToken}");
 
             var emailTemplate = new ConfirmEmailTemplate(account.FirstName, confirmationToken);
 

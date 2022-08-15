@@ -9,16 +9,21 @@ namespace BloodLoop.Application.Emails
 {
     public class ConfirmEmailTemplate : BaseEmailTemplate
     {
-        private readonly string _confirmToken;
+        public string ConfirmUrl { get; set; }
 
-        public ConfirmEmailTemplate(string userName, string confirmToken) : base(userName)
+        public ConfirmEmailTemplate(string userName, string confirmUrl) : base(userName)
         {
-            _confirmToken = confirmToken;
+            ConfirmUrl = confirmUrl;
         }
+
+        public override string Subject => "[BloodLoop] Potwierdź email!";
 
         public override string GetContent()
         {
-            return $@"Twój token potwierdzający: {_confirmToken}";
+            return 
+$@"Link do potwierdzenia: <a href=""{ConfirmUrl}"">Click!</a>
+
+Cyaa";
         }
     }
 }

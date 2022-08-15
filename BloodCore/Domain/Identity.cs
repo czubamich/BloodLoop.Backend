@@ -19,8 +19,6 @@ namespace BloodCore.Domain
             yield return Id;
         }
 
-        public override string ToString() => Id.ToString();
-
         public bool Equals(Identity other)
         {
             if (other is null) return false;
@@ -40,5 +38,7 @@ namespace BloodCore.Domain
         public static TIdentity Of(string id) => Of(Guid.Parse(id));
 
         public static TIdentity New => Of(Guid.NewGuid());
+
+        public override string ToString() => Id.ToString();
     }
 }
