@@ -9,12 +9,8 @@ using System.Threading.Tasks;
 
 namespace BloodLoop.Domain.Accounts
 {
-    public class Account : IdentityUser<AccountId>, IAggregateRoot<AccountId>
+    public class Account : IdentityUser<AccountId>, IEntity<AccountId>
     {
-        private readonly ConcurrentQueue<IDomainEvent> _domainEvents = new();
-
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
-
         AccountId IEntity<AccountId>.Id => AccountId.Of(Id);
 
         [PersonalData]
@@ -35,8 +31,6 @@ namespace BloodLoop.Domain.Accounts
             UserName = userName;
             Email = email;
             CreatedDate = createdAt;
-
-            Publish(new AccountCreatedEvent(Id));
         }
 
         #endregion
@@ -52,12 +46,6 @@ namespace BloodLoop.Domain.Accounts
         #endregion
 
         #region Behaviours
-
-        protected void Publish(IDomainEvent domainEvent) => _domainEvents.Enqueue(domainEvent);
-
-        public bool TryDequeue(out IDomainEvent domainEvent) => _domainEvents.TryDequeue(out domainEvent);
-
-        public void ClearDomainEvents() => _domainEvents.Clear();
 
         public Account SetFirstName(string firstName)
         {

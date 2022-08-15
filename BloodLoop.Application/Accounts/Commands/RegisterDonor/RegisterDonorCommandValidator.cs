@@ -10,7 +10,7 @@ using FluentValidation.Validators;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 
-namespace BloodLoop.Application.Donations.Commands.RegisterDonor
+namespace BloodLoop.Application.Donations.Commands
 {
     public class RegisterDonorCommandValidator : AbstractValidator<RegisterDonorCommand>
     {

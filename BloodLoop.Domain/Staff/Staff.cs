@@ -25,6 +25,8 @@ namespace BloodLoop.Domain.Staff
             Id = Guard.Against.NullOrDefault(id, nameof(Id));
             AccountId = Guard.Against.NullOrDefault(accountId, nameof(AccountId));
             BloodBankId = Guard.Against.NullOrDefault(bloodBankId, nameof(AccountId));
+
+            Publish(new AccountCreatedEvent(AccountId));
         }
         #endregion
 

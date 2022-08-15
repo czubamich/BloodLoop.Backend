@@ -21,9 +21,10 @@ namespace BloodLoop.Domain.Tests
             var gender = GenderType.Male;
             var birthDay = DateTime.Parse("1990-01-01T00:00:00.0000000-00:00");
             var pesel = new Pesel("04032514889");
+            var account = Account.Create("", "");
 
             //Act
-            var donor = Donor.Create(accountId, gender, birthDay)
+            var donor = Donor.Create(account, gender, birthDay)
                 .SetPesel(pesel);
 
             //Assert
@@ -39,10 +40,10 @@ namespace BloodLoop.Domain.Tests
         {
             //Arrange
             var pesel = new Pesel("04032514889");
-            var donor = Donor.Create(AccountId.New, GenderType.Male, DateTime.Parse("1990-01-01T00:00:00.0000000-00:00"))
-                .SetPesel(pesel);
+            var donor = Donor.Create(Account.Create("", ""), GenderType.Male, DateTime.Parse("1990-01-01T00:00:00.0000000-00:00"));
 
             //Act
+            donor.SetPesel(pesel);
 
             //Assert
             donor.Should().Invoking(_ => donor.SetPesel(pesel)).Should().Throw<DomainException>();

@@ -12,8 +12,9 @@ namespace BloodLoop.Application.Services
 
         Task<string> GetEmailVerificationToken(Account account);
         Task<IdentityResult> ConfirmEmailAsync(Account account, string token);
-        Task<string> GetForgotPasswordToken(string email);
+        Task<string> GetForgotPasswordToken(Account account);
         Task<IdentityResult> ResetPassword(Account account, string token, string password);
         Task<Account> GetAccountInfo(AccountId accountId);
+        Task<Account> GetAccountInfoByEmail(string email);
     }
 }

@@ -79,13 +79,10 @@ namespace BloodLoop.Infrastructure.Identities
             return await _userManager.ConfirmEmailAsync(user, token);
         }
 
-        public async Task<string> GetForgotPasswordToken(string email)
+        public async Task<string> GetForgotPasswordToken(Account account)
         {
-            var account = await _userManager.FindByEmailAsync(email);
-
             if (account == null) return null;
 
-            //TODO: Publish domain event
             return await _userManager.GeneratePasswordResetTokenAsync(account);
         }
 
@@ -100,6 +97,11 @@ namespace BloodLoop.Infrastructure.Identities
         public Task<Account> GetAccountInfo(AccountId accountId)
         {
             return _userManager.FindByIdAsync(accountId.Id.ToString());
+        }
+
+        public Task<Account> GetAccountInfoByEmail(string email)
+        {
+            return _userManager.FindByEmailAsync(email);
         }
     }
 }
