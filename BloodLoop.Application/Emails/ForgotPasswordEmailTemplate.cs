@@ -9,16 +9,18 @@ namespace BloodLoop.Application.Emails
 {
     public class ForgotPasswordEmailTemplate : BaseEmailTemplate
     {
-        private readonly string _resetToken;
+        public string ResetUrl { get; set; }
 
-        public ForgotPasswordEmailTemplate(string userName, string resetToken) : base(userName)
+        public ForgotPasswordEmailTemplate(string userName, string resetLink) : base(userName)
         {
-            _resetToken = resetToken;
+            ResetUrl = resetLink;
         }
+
+        public override string Subject => "[BloodLoop] Zapomniane hasło";
 
         public override string GetContent()
         {
-            return $@"Twój token do resetu: {_resetToken}";
+            return $@"Twój link do resetu: <a href=""{ResetUrl}"">Click!</a>";
         }
     }
 }

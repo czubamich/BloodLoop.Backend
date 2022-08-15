@@ -23,5 +23,21 @@ namespace BloodLoop.WebApi.Controllers
         [HttpPost("SignUp")]
         public async Task<ActionResult<DonorDto>> RegisterDonor([FromBody] RegisterDonorCommand command, CancellationToken cancellationToken)
             => (await _mediator.Send(command, cancellationToken)).ToActionResult();
+
+        [HttpPost("ResendConfirmation")]
+        public async Task<ActionResult<Unit>> ResendEmailConfirmation([FromQuery] ResendConfirmationEmailCommand command, CancellationToken cancellationToken)
+            => (await _mediator.Send(command, cancellationToken)).ToActionResult();
+
+        [HttpPost("ConfirmEmail")]
+        public async Task<ActionResult<Unit>> ConfirmEmail([FromQuery] ConfirmEmailCommand command, CancellationToken cancellationToken)
+            => (await _mediator.Send(command, cancellationToken)).ToActionResult();
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult<Unit>> SendPasswordReset([FromQuery] ResetPasswordCommand command, CancellationToken cancellationToken)
+            => (await _mediator.Send(command, cancellationToken)).ToActionResult();
+
+        [HttpPost("ConfirmReset")]
+        public async Task<ActionResult<Unit>> ResetPassword([FromBody] ConfirmResetCommand command, CancellationToken cancellationToken)
+            => (await _mediator.Send(command, cancellationToken)).ToActionResult();
     }
 }
