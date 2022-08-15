@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hangfire;
 using Hangfire.SqlServer;
 using BloodLoop.Infrastructure.Workers;
+using BloodLoop.Infrastructure.IoC;
 
 namespace BloodLoop.WebApi
 {
@@ -68,6 +69,8 @@ namespace BloodLoop.WebApi
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IApplicationContext, ApplicationContext>();
+
+            services.ConfigureSettings(appAssemblies.SelectMany(x => x.GetTypes()), Configuration);
 
             services.RegisterInjectables(appAssemblies.SelectMany(x => x.GetTypes()));
 
@@ -116,7 +119,6 @@ namespace BloodLoop.WebApi
                 options.OperationProcessors.Add(
                     new OperationSecurityScopeProcessor("JWT"));
             });
-
         }
 
         public IServiceCollection AddOptions(IServiceCollection services)
@@ -131,18 +133,20 @@ namespace BloodLoop.WebApi
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext dbContext, IServiceProvider sp)
         {
+            
             dbContext.Database.Migrate();
 
             sp.SetupRecurringJobs(Configuration);
 
             sp.SeedRoles().ConfigureAwait(false);
 
-            if (env.IsDevelopment() == false)
+            bool httpsEnabled = Configuration.Get<WebSettings>().HttpsEnabled;
+            if (httpsEnabled)
             {
                 app.UseHsts();
             }
 
-            app.UseOpenApi(options => options.PostProcess = (document, _) => document.Schemes = new[] { NSwag.OpenApiSchema.Https });
+            app.UseOpenApi(options => options.PostProcess = (document, _) => document.Schemes = new[] { httpsEnabled ? NSwag.OpenApiSchema.Https : NSwag.OpenApiSchema.Http });
 
             app.UseSwaggerUi3();
 
@@ -159,7 +163,8 @@ namespace BloodLoop.WebApi
                 c.AllowAnyMethod();
             });
 
-            app.UseHttpsRedirection();
+            if (httpsEnabled)
+                app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
