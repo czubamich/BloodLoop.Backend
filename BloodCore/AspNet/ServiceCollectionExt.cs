@@ -9,6 +9,7 @@ using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using BloodCore.Workers;
 using Microsoft.Extensions.Configuration;
+using BloodCore.Extensions;
 
 namespace BloodCore.AspNet
 {
@@ -17,6 +18,23 @@ namespace BloodCore.AspNet
         public static IServiceCollection AddSpecification(this IServiceCollection services)
         {
             services.AddScoped<ISpecificationEvaluator, SpecificationEvaluator>();
+
+            return services;
+        }
+
+        public static IServiceCollection ConfigureSettings(this IServiceCollection services, IEnumerable<Type> types, IConfiguration configuration)
+        {
+            types
+                .Select(x => new
+                {
+                    SettingsAttribute = x.GetCustomAttributes(typeof(SettingsAttribute), true).OfType<SettingsAttribute>().FirstOrDefault(),
+                    Type = x
+                })
+                .Where(x => x.SettingsAttribute != null)
+                .ForEach(x =>
+                {
+                    services.AddSingleton(x.Type, configuration.GetSection(x.SettingsAttribute.SectionName).Get(x.Type));
+                });
 
             return services;
         }

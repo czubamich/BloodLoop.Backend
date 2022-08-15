@@ -1,23 +1,24 @@
-﻿using BloodCore.Extensions;
+﻿using BloodCore.AspNet;
+using BloodCore.Extensions;
 using BloodCore.Workers;
-using BloodLoop.Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 using Serilog.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BloodLoop.Infrastructure.Workers
+namespace BloodLoop.Infrastructure.IoC
 {
-    public static class JobSchedulerServiceExtensions
+    public static class IoCExtensions
     {
         public static IServiceProvider SetupRecurringJobs(this IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            var reccuringJobsSettingsSection = configuration.GetSection(nameof(RecurringJobsSettings));
-            var reccuringJobsSettings = reccuringJobsSettingsSection.Get<RecurringJobsSettings>();
+            var reccuringJobsSettings = serviceProvider.GetService<RecurringJobsSettings>();
 
             if (reccuringJobsSettings?.Definitions is null || reccuringJobsSettings.Definitions.Count == 0)
                 return serviceProvider;
@@ -30,19 +31,19 @@ namespace BloodLoop.Infrastructure.Workers
                 .Where(x => x.Job is not null)
                 .ForEach(x =>
                 {
-                    try 
+                    try
                     {
                         if (!string.IsNullOrEmpty(x.Settings?.Cron))
                             x.Job.Configure(jobScheduler, x.Settings);
                         else
                             jobScheduler.RemoveRecurring(x.Job.Name);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         jobScheduler.RemoveRecurring(x.Job.Name);
-                        
+
                         LogContext.PushProperty("Trace", ex.StackTrace);
-                        if(ex.InnerException != null)
+                        if (ex.InnerException != null)
                             LogContext.PushProperty("InnerExceptionMessage", ex.InnerException.Message);
 
                         Log.Error("RecurringJob configuration failed, error: {ExceptionMessage}", ex.Message);
