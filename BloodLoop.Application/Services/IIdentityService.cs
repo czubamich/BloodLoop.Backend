@@ -11,5 +11,6 @@ namespace BloodLoop.Application.Services
         public Task<AuthenticationResult> RefreshToken(string refreshToken, CancellationToken cancellationToken = default);
         public Task SignOutAsync(AccountId accountId, string refreshToken, CancellationToken cancellationToken = default);
         public Task RevokeRefreshToken(string refreshToken, CancellationToken cancellationToken = default);
+        public bool ValidateTokenForRole(string token, Role role);
     }
 }
