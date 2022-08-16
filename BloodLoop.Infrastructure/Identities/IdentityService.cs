@@ -15,6 +15,7 @@ using BloodLoop.Infrastructure.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace BloodLoop.Infrastructure.Identities
 {
@@ -153,6 +154,13 @@ namespace BloodLoop.Infrastructure.Identities
                 throw new AuthenticationException(InvalidRefreshTokenMsg);
 
             return storedRefreshToken;
+        }
+
+        public bool ValidateTokenForRole(string token, Role role)
+        {
+            var principial = GetPrincipalFromToken(token);
+
+            return principial.IsInRole(role.Name);
         }
 
         private ClaimsPrincipal GetPrincipalFromToken(string token)
