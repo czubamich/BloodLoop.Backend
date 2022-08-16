@@ -64,7 +64,7 @@ namespace BloodLoop.Application.Jobs
 
                         rckik.AddBloodLevel(bloodType, value, measurementTime);
 
-                        Log.Information("[{MeasurementDate}][{BloodType}] New BloodLevel: {BloodLevel}", measurementTime.ToString("dd.MM.yyyy"), bloodType.Symbol, value);
+                        Log.Information("[{Source}][{BloodType}] New BloodLevel: {BloodLevel} - {MeasurementDate}", rckik.Name, bloodType.Symbol, value, measurementTime.ToString("dd.MM.yyyy"));
                     }
                     catch(Exception e)
                     {
