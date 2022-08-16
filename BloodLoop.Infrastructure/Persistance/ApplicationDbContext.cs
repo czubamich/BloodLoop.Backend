@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using BloodLoop.Domain.Donations;
 using BloodLoop.Domain.Donors;
 using BloodLoop.Infrastructure.Identities;
+using BloodLoop.Domain.BloodBanks;
 
 namespace BloodLoop.Infrastructure.Persistance
 {
@@ -26,6 +27,8 @@ namespace BloodLoop.Infrastructure.Persistance
         public DbSet<Donor> Donors { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<DonationType> DonationTypes { get; set; }
+        public DbSet<BloodBank> BloodBanks { get; set; }
+        public DbSet<BloodLevel> BloodLevels { get; set; }
 
         private IDbContextTransaction _dbContextTransaction;
         private IList<IAggregateRoot> _aggregates;

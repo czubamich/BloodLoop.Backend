@@ -22,8 +22,16 @@ namespace BloodLoop.Infrastructure.Persistance.Configurations
                 .HasConversion(x => x.Id, id => BloodBankId.Of(id));
 
             builder
-                .Property(x => x.Name)
+                .Property(x => x.Label)
                 .HasMaxLength(11);
+
+            builder
+                .Property(x => x.Name)
+                .HasMaxLength(25);
+
+            builder
+                .Property(x => x.Address)
+                .HasMaxLength(500);
         }
     }
 }
