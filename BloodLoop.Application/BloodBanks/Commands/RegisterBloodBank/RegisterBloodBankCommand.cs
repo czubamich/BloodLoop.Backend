@@ -11,8 +11,8 @@ namespace BloodLoop.Application.BloodBanks.Commands
 {
     public class RegisterBloodBankCommand : ICommand<Either<Error, BloodBankDto>>
     {
+        public string Label { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
-
     }
 }

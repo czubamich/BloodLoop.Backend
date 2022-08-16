@@ -27,7 +27,7 @@ namespace BloodLoop.Application.BloodBanks.Commands
 
         public async Task<Either<Error, BloodBankDto>> Handle(RegisterBloodBankCommand request, CancellationToken cancellationToken)
         {
-            var bloodBank = BloodBank.Create(request.Name, request.Address);
+            var bloodBank = BloodBank.Create(request.Label, request.Name, request.Address);
 
             await _bloodBankRepository.AddAsync(bloodBank, cancellationToken);
 
