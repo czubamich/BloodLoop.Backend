@@ -14,6 +14,8 @@ namespace BloodLoop.Application.BloodBanks.Shared
         {
             CreateMap<BloodBank, BloodBankDto>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Id.Id));
+
+            CreateMap<BloodLevel, BloodLevelDto>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Serilog.Context;
 using Serilog.Events;
 using System;
@@ -46,6 +47,9 @@ class SerilogMiddleware
         var template = MessageTemplate;
 
         var start = Stopwatch.GetTimestamp();
+        var sessionId = httpContext.Request.Headers.FirstOrDefault(x => x.Key == "SessionId").Value.ToString();
+        using (LogContext.PushProperty("SessionId", sessionId ?? "none"))
+
         try
         {
             if (ExcludedPaths.Any(p => GetPath(httpContext).Contains(p)))

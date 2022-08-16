@@ -73,7 +73,6 @@ namespace BloodLoop.WebApi.Controllers
             return result;
         }
 
-        [Authorize]
         [HttpPost("Revoke")]
         public async Task<ActionResult> RevokeRefreshToken([FromBody] RevokeRefreshTokenRequest request, CancellationToken cancellationToken)
         {
