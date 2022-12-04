@@ -29,12 +29,11 @@ using Hangfire;
 using Hangfire.SqlServer;
 using BloodLoop.Infrastructure.Workers;
 using BloodLoop.Infrastructure.IoC;
-using Hangfire.Dashboard;
 using Hangfire.Annotations;
-using BloodLoop.Domain.Accounts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using BloodLoop.WebApi.Middlewares;
+using BloodLoop.Domain.Donors;
 
 namespace BloodLoop.WebApi
 {
@@ -104,7 +103,11 @@ namespace BloodLoop.WebApi
 
             services.AddSecurity(Configuration);
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new IdentityJsonConverter<DonorId>());
+                });
 
             services.AddOpenApiDocument(options =>
             {
@@ -205,67 +208,6 @@ namespace BloodLoop.WebApi
 
             toLoad.ForEach(x => loadedAssemblies.Add(AppDomain.CurrentDomain.Load(x)));
             return loadedAssemblies.Where(x => x.FullName.Contains("Blood"));
-        }
-    }
-
-    public class HangfireDashboardJwtAuthorizationFilter : IDashboardAuthorizationFilter
-    {
-        private static ILogger logger = Log.Logger;
-        private static readonly string HangFireCookieName = "HangFireCookie";
-        private static readonly int CookieExpirationMinutes = 30;
-        private IIdentityService identityService;
-
-        public HangfireDashboardJwtAuthorizationFilter(IIdentityService identityService)
-        {
-            this.identityService = identityService;
-        }
-
-        public bool Authorize(DashboardContext context)
-        {
-            var httpContext = context.GetHttpContext();
-
-            var access_token = String.Empty;
-            var setCookie = false;
-
-            // try to get token from query string
-            if (httpContext.Request.Query.ContainsKey("access_token"))
-            {
-                access_token = httpContext.Request.Query["access_token"].FirstOrDefault();
-                setCookie = true;
-            }
-            else
-            {
-                access_token = httpContext.Request.Cookies[HangFireCookieName];
-            }
-
-            if (String.IsNullOrEmpty(access_token))
-            {
-                return false;
-            }
-
-            try
-            {
-                if(!identityService.ValidateTokenForRole(access_token, Role.Admin))
-                    return false;
-            }
-            catch (Exception e)
-            {
-                logger.Error(e, "Error during dashboard hangfire jwt validation process");
-                throw;
-            }
-
-            if (setCookie)
-            {
-                httpContext.Response.Cookies.Append(HangFireCookieName,
-                access_token,
-                new CookieOptions()
-                {
-                    Expires = DateTime.Now.AddMinutes(CookieExpirationMinutes)
-                });
-            }
-
-
-            return true;
         }
     }
 }

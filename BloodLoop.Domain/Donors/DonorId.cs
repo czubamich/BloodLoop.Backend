@@ -1,4 +1,5 @@
 ﻿using BloodCore.Domain;
+using BloodLoop.Domain.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace BloodLoop.Domain.Donors
         private DonorId(Guid id) : base(id)
         {
         }
+
+        public AccountId AsAccountId => AccountId.Of(Id);
     }
 }

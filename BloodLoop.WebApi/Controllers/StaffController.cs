@@ -41,7 +41,7 @@ namespace BloodLoop.WebApi.Controllers
             => (await _mediator.Send(new DeleteDonationsCommand(deleteDonationRequest), cancellationToken)).ToActionResult();
 
         [HttpGet("Donor")]
-        public async Task<ActionResult<DonorExtDto>> GetDonorInfo([FromBody] GetDonorInfoQuery getDonorInfoQuery, CancellationToken cancellationToken)
+        public async Task<ActionResult<DonorExtDto>> GetDonorInfo([FromQuery] GetDonorInfoQuery getDonorInfoQuery, CancellationToken cancellationToken)
             => (await _mediator.Send(getDonorInfoQuery, cancellationToken)).ToActionResult();
 
         [HttpPost("Donor/Verification")]

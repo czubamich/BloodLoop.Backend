@@ -9,7 +9,7 @@ namespace BloodLoop.Application.Staff.Shared
 {
     public class DonorExtDto
     {
-        public Guid Id { get; set; }
+        public DonorId Id { get; set; }
 
         public string Pesel { get; set; }
 

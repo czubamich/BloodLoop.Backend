@@ -47,8 +47,8 @@ class SerilogMiddleware
         var template = MessageTemplate;
 
         var start = Stopwatch.GetTimestamp();
-        var sessionId = httpContext.Request.Headers.FirstOrDefault(x => x.Key == "SessionId").Value.ToString();
-        using (LogContext.PushProperty("SessionId", sessionId ?? "none"))
+
+        using (LogContext.PushProperty("SessionId", ExtractHeader(httpContext, "SessionId")))
 
         try
         {
@@ -92,6 +92,11 @@ class SerilogMiddleware
             }
         }
         catch (Exception ex) when (LogException(httpContext, template, GetElapsedMilliseconds(start, Stopwatch.GetTimestamp()), ex)) { }
+    }
+
+    private static string ExtractHeader(HttpContext httpContext, string sessionIdHeader)
+    {
+        return httpContext.Request.Headers.FirstOrDefault(x => x.Key == sessionIdHeader).Value.ToString();
     }
 
     private async Task<string> HandleNext(RequestDelegate next, HttpContext httpContext)

@@ -1,5 +1,6 @@
 ﻿using BloodCore.Results;
 using BloodLoop.Application.Staff.Shared;
+using BloodLoop.Domain.Donors;
 using LanguageExt;
 using MediatR;
 using System;
@@ -12,6 +13,7 @@ namespace BloodLoop.Application.Staff.Queries.GetDonorInfo
 {
     public class GetDonorInfoQuery : IRequest<Either<Error, DonorExtDto>>
     {
-        public string EmailOrPesel { get; set; }
+        public string? EmailOrPesel { get; set; }
+        public DonorId? DonorId { get; set; }
     }
 }

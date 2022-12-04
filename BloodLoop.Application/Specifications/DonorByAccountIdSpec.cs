@@ -17,7 +17,8 @@ namespace BloodLoop.Application.Specifications.Accounts
         public DonorByAccountIdSpec(AccountId accountId)
         {
             Query
-                .Where(x => x.AccountId == accountId);
+                .Where(x => x.AccountId == accountId)
+                .Include(x => x.Account);
         }
     }
 }

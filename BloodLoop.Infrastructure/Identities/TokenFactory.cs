@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BloodCore;
 using BloodCore.AspNet;
+using BloodCore.Extensions;
 using BloodLoop.Domain.Accounts;
 using BloodLoop.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
@@ -35,8 +36,8 @@ namespace BloodLoop.Infrastructure.Identities
 
             ClaimsIdentity Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToShort()),
+                new Claim(JwtRegisteredClaimNames.Sub, account.Id.Id.ToShort()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, account.UserName),
             });
 
@@ -63,7 +64,7 @@ namespace BloodLoop.Infrastructure.Identities
             Claim[] claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Jti, refreshToken.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Sub, refreshToken.AccountId.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, refreshToken.AccountId.ToShort())
             };
 
             JwtPayload payload = new JwtPayload(_authenticationOptions.Issuer, _authenticationOptions.Audience, claims,
