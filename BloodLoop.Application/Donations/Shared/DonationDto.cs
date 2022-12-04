@@ -10,6 +10,8 @@ namespace BloodLoop.Application.Donations
 {
     public class DonationDto
     {
+        DonationId Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public string Location { get; set; }

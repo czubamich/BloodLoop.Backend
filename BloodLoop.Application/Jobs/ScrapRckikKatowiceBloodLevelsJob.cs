@@ -40,7 +40,7 @@ namespace BloodLoop.Application.Jobs
 
             var bloodLevels = await _client.GetBloodLevels();
 
-            if (!bloodLevels.Any() && bloodLevels.First().Date.Date < measurementTime.Date)
+            if (!bloodLevels.Any() || bloodLevels.First().Date.Date < measurementTime.Date)
                 throw new InvalidOperationException("Rckik Data is not fresh yet!");
 
             var rckik = await _repository.Get(new BloodBankByLabelSpec(RCKIK_KATOWICE_LABEL));

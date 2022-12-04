@@ -47,6 +47,8 @@ API can be used with following [React Native App](https://github.com/czubamich/B
 * [ASP.NET Web API](https://docs.microsoft.com/en-us/aspnet/web-api/)
 * [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
 * [MediatR](https://github.com/jbogard/MediatR)
+* [Hangfire](https://www.hangfire.io/)
+* [Seq](https://datalust.co/seq)
 * [Ardalis.Specification](https://github.com/ardalis/Specification)
 * [Ardalis.GuardClauses](https://github.com/ardalis/GuardClauses)
 * [AutoMapper](https://automapper.org/)

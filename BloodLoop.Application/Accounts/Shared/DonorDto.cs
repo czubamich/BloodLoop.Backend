@@ -6,7 +6,7 @@ namespace BloodLoop.Application.Accounts
 {
     public class DonorDto
     {
-        public Guid Id { get; set; }
+        public DonorId Id { get; set; }
 
         public string FirstName { get; set; }
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using BloodCore.Domain;
+using BloodCore.Extensions;
 
 namespace BloodCore.AspNet
 {
@@ -16,7 +17,7 @@ namespace BloodCore.AspNet
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
             var stringValue = value as string;
-            if (!string.IsNullOrEmpty(stringValue) && Guid.TryParse(stringValue, out var guidValue))
+            if (!string.IsNullOrEmpty(stringValue) && GuidExtensions.TryParseShort(stringValue, out var guidValue))
             {
                 return (TIdentity)Activator.CreateInstance(type: typeof(TIdentity),
                     bindingAttr: BindingFlags.NonPublic | BindingFlags.Instance,

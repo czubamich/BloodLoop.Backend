@@ -19,6 +19,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using BloodLoop.Application.Donations.Queries.GetDonationInterval;
+using BloodLoop.Domain.Donors;
 
 namespace BloodLoop.WebApi.Controllers
 {
@@ -38,7 +39,7 @@ namespace BloodLoop.WebApi.Controllers
         [HttpGet("Info")]
         [Authorize(Roles = nameof(Role.Donor))]
         public async Task<ActionResult<DonorDto>> GetCurrentDonorInfo(CancellationToken cancellationToken)
-            => (await _mediator.Send(new GetDonorInfoQuery(_applicationContext.AccountId), cancellationToken)).ToActionResult();
+            => (await _mediator.Send(new GetDonorInfoQuery(DonorId.Of(_applicationContext.AccountId)), cancellationToken)).ToActionResult();
 
         [HttpGet("Donations")]
         [Authorize(Roles = nameof(Role.Donor))]

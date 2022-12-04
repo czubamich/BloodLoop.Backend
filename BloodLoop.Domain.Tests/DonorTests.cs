@@ -21,7 +21,7 @@ namespace BloodLoop.Domain.Tests
             var gender = GenderType.Male;
             var birthDay = DateTime.Parse("1990-01-01T00:00:00.0000000-00:00");
             var pesel = new Pesel("04032514889");
-            var account = Account.Create("", "");
+            var account = Account.Create(accountId, "", "");
 
             //Act
             var donor = Donor.Create(account, gender, birthDay)

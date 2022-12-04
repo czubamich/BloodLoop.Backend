@@ -30,7 +30,13 @@ namespace BloodLoop.Application.Staff.Queries.GetDonorInfo
         {
             Donor donor;
 
-            donor = await _donorRepository.Get(new DonorByEmailSpec(request.EmailOrPesel), cancellationToken);
+            if(request.DonorId is not null)
+                donor = await _donorRepository.Get(new DonorByAccountIdSpec(request.DonorId.AsAccountId), cancellationToken);
+            else if (request.EmailOrPesel is not null)
+                donor = await _donorRepository.Get(new DonorByEmailSpec(request.EmailOrPesel), cancellationToken);
+            else
+                return new Error.Invalid("DonorId or Email missing");
+
 
             if (donor is null && Pesel.TryParse(request.EmailOrPesel, out Pesel pesel))
                 donor = await _donorRepository.Get(new DonorByPeselSpec(pesel), cancellationToken);
